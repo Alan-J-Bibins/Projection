@@ -6,6 +6,9 @@
 - Confirmed on the color scheme for UI
 - Started wireframing the Layout of the Frontend in Figma
 
+## Progress Report: 24 March, 2025
+- Added the chosen colorscheme as css variables
+
 ## Tech Stack
 - Frontend:
     1. Remix/React
