@@ -16,6 +16,13 @@ export default {
                     'Noto Color Emoji',
                 ],
             },
+            colors: {
+                'text': 'var(--text)',
+                'background': 'var(--background)',
+                'primary': 'var(--primary)',
+                'secondary': 'var(--secondary)',
+                'accent': 'var(--accent)',
+            },
         },
     },
     plugins: [require('tailwindcss-motion')],
