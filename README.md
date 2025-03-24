@@ -1,15 +1,18 @@
 # Projection: Manage and Complete the projects you've always wanted to do
 
-[Figma](https://www.figma.com/design/ZHDTXu6E4mhuwPHTfNCPVp/Projection?node-id=1-7&t=g9ovkJF4Sh6AhaWu-1) 
+[Figma](https://www.figma.com/design/ZHDTXu6E4mhuwPHTfNCPVp/Projection?node-id=1-7&t=g9ovkJF4Sh6AhaWu-1)
 
 ## Progress Report: 23 March, 2025
+
 - Confirmed on the color scheme for UI
 - Started wireframing the Layout of the Frontend in Figma
 
 ## Progress Report: 24 March, 2025
+
 - Added the chosen colorscheme as css variables
 
 ## Tech Stack
+
 - Frontend:
     1. Remix/React
 - Backend:
