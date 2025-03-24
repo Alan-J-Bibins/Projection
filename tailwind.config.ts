@@ -15,6 +15,8 @@ export default {
                     'Segoe UI Symbol',
                     'Noto Color Emoji',
                 ],
+                outfit: ['"Outfit"', 'sans-serif'],
+                righteous: ['"Righteous"', 'sans-serif'],
             },
             colors: {
                 'text': 'var(--text)',
