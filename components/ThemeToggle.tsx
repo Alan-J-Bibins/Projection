@@ -38,16 +38,13 @@ export function ThemeToggle() {
     return (
         <button
             onClick={() => setDarkMode(!darkMode)}
-            className="relative rounded-2xl flex items-center justify-center motion-preset-focus-md
-            text-primary overflow-hidden border border-primary/60 group
-            hover:shadow-lg hover:shadow-primary/25 hover:border-primary transition-all
+            className="relative w-fit h-fit flex items-center justify-center motion-preset-focus-md p-5 rounded-2xl
+            bg-gradient-to-t from-primary/40 to-secondary/40 text-primary overflow-hidden border border-primary/60
+            hover:shadow-lg hover:shadow-primary/25 hover:border-primary transition-all duration-150 ease-out
             "
         >
-            <div className="relative p-5 flex justify-center items-center bg-gradient-to-t from-primary/40 to-secondary/40 rounded-2xl
-                    transition-all duration-150 ease-out">
-                <Sun size={24} className={`absolute  ${darkMode ? 'motion-rotate-out-90 motion-opacity-out-0' : 'motion-rotate-in-90 motion-preset-focus-md'}`} />
-                <Moon size={24} className={`absolute ${darkMode ? 'motion-preset-focus-md -motion-rotate-in-90' : '-motion-rotate-out-90 motion-opacity-out-0'}`} />
-            </div>
+            <Sun size={24} className={`absolute  ${darkMode ? 'motion-rotate-out-90 motion-opacity-out-0 motion-translate-y-out-100' : 'motion-rotate-in-90 motion-preset-focus-md -motion-translate-y-in-100'}`} />
+            <Moon size={24} className={`absolute ${darkMode ? 'motion-preset-focus-md -motion-rotate-in-90 -motion-translate-y-in-100' : '-motion-rotate-out-90 motion-opacity-out-0 motion-translate-y-out-100'}`} />
         </button>
     );
 }
