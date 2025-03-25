@@ -1,5 +1,3 @@
-"use client";
-
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -39,14 +37,15 @@ export function ThemeToggle() {
     return (
         <button
             onClick={() => setDarkMode(!darkMode)}
-            className="relative w-10 h-6 rounded-full flex items-center justify-center 
-            text-background bg-secondary motion-preset-focus-md"
+            className="relative rounded-2xl flex items-center justify-center motion-preset-focus-md
+            text-primary overflow-hidden border border-primary/60 group
+            hover:shadow-lg hover:shadow-primary/25 hover:border-primary transition-all
+            "
         >
-            <div className="p-0.5 bg-primary rounded-full flex justify-center items-center
-                -translate-x-2 dark:translate-x-2 transition-all duration-150 ease-out"
-            >
-                <Sun size={20} className={`${darkMode ? 'hidden' : ''}`} />
-                <Moon size={20} className={`${darkMode ? '' : 'hidden '}`} />
+            <div className="relative p-5 flex justify-center items-center bg-gradient-to-t from-primary/40 to-secondary/40 rounded-2xl
+                    transition-all duration-150 ease-out">
+                <Sun size={24} className={`absolute  ${darkMode ? 'motion-rotate-out-90 motion-opacity-out-0' : 'motion-rotate-in-90 motion-preset-focus-md'}`} />
+                <Moon size={24} className={`absolute ${darkMode ? 'motion-preset-focus-md -motion-rotate-in-90' : '-motion-rotate-out-90 motion-opacity-out-0'}`} />
             </div>
         </button>
     );

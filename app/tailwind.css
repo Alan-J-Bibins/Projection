@@ -12,21 +12,20 @@ body {
 }
 
 @layer base {
-    :root {
-        --text: #0b0c0e;
-        --background: #f8f9fc;
-        --primary: #092a77;
-        --secondary: #8d9dc3;
-        --accent: #950b09;
-    }
-
-    .dark {
-        --text: #f1f2f4;
-        --background: #030407;
-        --primary: #88a9f6;
-        --secondary: #3c4b72;
-        --accent: #f66c6a;
-    }
+  :root {
+    --text: 11 12 14;
+    --background: 248 249 252;
+    --primary: 9 42 119;
+    --secondary: 141 158 195;
+    --accent: 149 11 9;
+  }
+  .dark {
+    --text: 241 242 244;
+    --background: 3 4 7;
+    --primary: 136 169 246;
+    --secondary: 60 76 114;
+    --accent: 246 108 106;
+  }
 
     .font-outfit {
         font-weight: 300;

@@ -35,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body className='bg-background text-text transition-colors duration-150'>
+            <body className='bg-background text-text transition-colors duration-150 antialiased'>
                 <div className='h-screen max-h-screen'>
                     <ThemeToggle />
                     <main className='h-[90vh]'>

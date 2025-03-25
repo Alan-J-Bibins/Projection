@@ -19,12 +19,15 @@ export default {
                 righteous: ['"Righteous"', 'sans-serif'],
             },
             colors: {
-                text: 'var(--text)',
-                background: 'var(--background)',
-                primary: 'var(--primary)',
-                secondary: 'var(--secondary)',
-                accent: 'var(--accent)',
+                'text': 'rgb(var(--text))',
+                'background': 'rgb(var(--background))',
+                'primary': 'rgb(var(--primary))',
+                'secondary': 'rgb(var(--secondary))',
+                'accent': 'rgb(var(--accent))',
             },
+            backgroundImage: {
+                'active-gradient': 'linear-gradient(225deg, var(--Accent, #F66C6A) 0%, var(--Secondary, #3C4C72) 50%, var(--Secondary, #3C4C72) 75%, var(--Primary, #86A7F6) 100%);'
+            }
         },
     },
     plugins: [require('tailwindcss-motion')],
