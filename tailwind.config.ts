@@ -28,4 +28,5 @@ export default {
         },
     },
     plugins: [require('tailwindcss-motion')],
+    darkMode: ['class']
 } satisfies Config;

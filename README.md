@@ -11,6 +11,7 @@
 
 - Added the chosen colorscheme as css variables
 - Setup CockroachDB with the Prisma ORM
+- Setup toggling between dark and light modes
 
 ## Progress Report: 25 March, 2025
 
