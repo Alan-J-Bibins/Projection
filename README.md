@@ -10,6 +10,11 @@
 ## Progress Report: 24 March, 2025
 
 - Added the chosen colorscheme as css variables
+- Setup CockroachDB with the Prisma ORM
+
+## Progress Report: 25 March, 2025
+
+- Discussed schema of Database
 
 ## Tech Stack
 
