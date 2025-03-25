@@ -18,7 +18,6 @@ export function ThemeToggle() {
     }, []);
 
     useEffect(() => {
-        console.log('hello there', darkMode);
         if (mounted) {
             if (darkMode) {
                 localStorage.setItem('theme', 'dark')

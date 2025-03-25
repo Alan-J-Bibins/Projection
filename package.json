@@ -6,6 +6,7 @@
     "scripts": {
         "build": "remix vite:build",
         "dev": "remix vite:dev",
+        "devHost": "remix vite:dev --host",
         "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
         "start": "remix-serve ./build/server/index.js",
         "typecheck": "tsc",
@@ -24,6 +25,8 @@
         "prisma": "^6.5.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "remix-auth": "^3.7.0",
+        "remix-auth-google": "^2.0.0",
         "tailwindcss-motion": "^1.1.0"
     },
     "devDependencies": {
