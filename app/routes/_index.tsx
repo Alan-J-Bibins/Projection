@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import LoginButton from './login';
 import { authenticator } from '~/services/auth.server';
+import LoginButton from './login';
 
 export const meta: MetaFunction = () => {
     return [

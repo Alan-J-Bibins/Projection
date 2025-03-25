@@ -12,10 +12,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Page() {
     const { user } = useLoaderData<typeof loader>();
-    console.log("LESGO", user);
 
     return (
-        <div className="h-screen">
+        <div>
             Projects Page
             <p>Welcome {user.name}</p>
             <Form action="/logout" method="post">
