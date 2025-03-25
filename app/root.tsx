@@ -47,7 +47,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     }}
                 />
             </head>
-            <body className='bg-background text-text transition-colors duration-150 antialiased'>
+            <body className='bg-background text-text font-outfit transition-colors duration-150 antialiased'>
                 <CookiesProvider>
                     <main className='h-screen min-h-screen'>
                         {children}
