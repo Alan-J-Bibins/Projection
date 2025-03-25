@@ -4,7 +4,7 @@ import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
-    const [darkMode, setDarkMode] = useState<boolean>(true);
+    const [darkMode, setDarkMode] = useState<boolean>(false);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export function ThemeToggle() {
         <button
             onClick={() => setDarkMode(!darkMode)}
             className="relative w-10 h-6 rounded-full flex items-center justify-center 
-            text-background bg-secondary"
+            text-background bg-secondary motion-preset-focus-md"
         >
             <div className="p-0.5 bg-primary rounded-full flex justify-center items-center
                 -translate-x-2 dark:translate-x-2 transition-all duration-150 ease-out"
