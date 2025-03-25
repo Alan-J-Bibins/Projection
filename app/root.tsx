@@ -8,6 +8,7 @@ import {
 import type { LinksFunction } from '@remix-run/node';
 
 import './tailwind.css';
+import { ThemeToggle } from 'components/ThemeToggle';
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -34,8 +35,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Meta />
                 <Links />
             </head>
-            <body>
-                {children}
+            <body className='bg-background text-text transition-colors duration-150'>
+                <div className='h-screen max-h-screen'>
+                    <ThemeToggle />
+                    <main className='h-[90vh]'>
+                        {children}
+                    </main>
+                </div>
                 <ScrollRestoration />
                 <Scripts />
             </body>

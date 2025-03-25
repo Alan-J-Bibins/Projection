@@ -9,10 +9,8 @@ export function ThemeToggle() {
 
     useEffect(() => {
         const theme = localStorage.getItem('theme');
-        console.log('theme = ', theme);
         const isDarkMode = theme === 'dark' || (theme === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
         setDarkMode(isDarkMode);
-        console.log(isDarkMode);
         if (isDarkMode) {
             document.documentElement.classList.add('dark');
         } else {
@@ -22,7 +20,7 @@ export function ThemeToggle() {
     }, []);
 
     useEffect(() => {
-        console.log('hello there');
+        console.log('hello there', darkMode);
         if (mounted) {
             if (darkMode) {
                 localStorage.setItem('theme', 'dark')
@@ -41,10 +39,15 @@ export function ThemeToggle() {
     return (
         <button
             onClick={() => setDarkMode(!darkMode)}
-            className="w-6"
+            className="relative w-10 h-6 rounded-full flex items-center justify-center 
+            text-background bg-secondary"
         >
-            <Sun size={20} className={`${darkMode ? 'hidden' : 'block'}`}/>
-            <Moon size={20} className={`${darkMode ? 'block' : 'hidden'}`}/>
+            <div className="p-0.5 bg-primary rounded-full flex justify-center items-center
+                -translate-x-2 dark:translate-x-2 transition-all duration-150 ease-out"
+            >
+                <Sun size={20} className={`${darkMode ? 'hidden' : ''}`} />
+                <Moon size={20} className={`${darkMode ? '' : 'hidden '}`} />
+            </div>
         </button>
     );
 }
