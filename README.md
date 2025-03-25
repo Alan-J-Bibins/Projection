@@ -19,6 +19,9 @@
 - Beautified the theme toggle component
 - Setup Auth using Google Oauth
 
+## Progress Report: 26 March, 2025
+- Setup theme to be stored as a cookie rather than in local storage to prevent flash of light mode even when dark mode is selected
+
 ## Tech Stack
 
 - Frontend:
