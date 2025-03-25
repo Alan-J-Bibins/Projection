@@ -24,6 +24,7 @@
         "prettier": "^3.5.2",
         "prisma": "^6.5.0",
         "react": "^18.2.0",
+        "react-cookie": "^8.0.1",
         "react-dom": "^18.2.0",
         "remix-auth": "^3.7.0",
         "remix-auth-google": "^2.0.0",

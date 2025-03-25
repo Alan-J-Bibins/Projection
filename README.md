@@ -16,6 +16,8 @@
 ## Progress Report: 25 March, 2025
 
 - Discussed schema of Database
+- Beautified the theme toggle component
+- Setup Auth using Google Oauth
 
 ## Tech Stack
 

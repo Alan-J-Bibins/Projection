@@ -1,33 +1,35 @@
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 export function ThemeToggle() {
-    const [darkMode, setDarkMode] = useState<boolean>(false);
+    const [cookies, setCookie] = useCookies(['theme']);
+    const [darkMode, setDarkMode] = useState<boolean>(() => {
+        if (typeof window !== 'undefined') {
+            return cookies.theme === 'dark'
+        }
+        return false;
+    });
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        const theme = localStorage.getItem('theme');
-        const isDarkMode = theme === 'dark' || (theme === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        setDarkMode(isDarkMode);
-        if (isDarkMode) {
+        if (darkMode) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
         setMounted(true);
-    }, []);
+    }, [darkMode]);
 
     useEffect(() => {
         if (mounted) {
-            if (darkMode) {
-                localStorage.setItem('theme', 'dark')
-                document.documentElement.classList.add('dark')
-            } else {
-                localStorage.setItem('theme', 'light')
-                document.documentElement.classList.remove('dark')
-            }
+            const newTheme = darkMode ? 'dark' : 'light';
+            setCookie('theme', newTheme, {
+                path: '/',
+                maxAge: 365 * 24 * 60 * 60
+            })
         }
-    }, [darkMode, mounted]);
+    }, [darkMode, mounted, setCookie]);
 
     if (!mounted) {
         return null;
