@@ -21,6 +21,8 @@
 
 ## Progress Report: 26 March, 2025
 - Setup theme to be stored as a cookie rather than in local storage to prevent flash of light mode even when dark mode is selected
+- Built the Sidebar Component
+- Configured New Users to be Added to DB
 
 ## Tech Stack
 
