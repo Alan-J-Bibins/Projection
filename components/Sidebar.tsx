@@ -28,7 +28,7 @@ function SidebarItem({ href, Icon, label, isExpanded }: { href: string, label: s
     );
 }
 
-function DesktopSidebar() {
+function DesktopSidebar({ name }: { name: string }) {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     return (
         <nav
@@ -41,7 +41,18 @@ function DesktopSidebar() {
                 <SidebarItem href="/teams" label="Teams" Icon={UsersRound} isExpanded={isExpanded} />
                 <SidebarItem href="/settings" label="Settings" Icon={SlidersHorizontal} isExpanded={isExpanded} />
             </div>
-            <ThemeToggle />
+            <div className={`grid gap-2 p-4 justify-items-start items-center content-center transition-all duration-200
+            ${isExpanded ? 'grid-cols-[auto_1fr] w-32' : 'grid-cols-1 w-14'}`}
+            >
+                <div className="p-4 bg-white rounded-full" />
+                <p
+                    className={`truncate w-14 ${isExpanded
+                        ? 'motion-opacity-in-0 -motion-translate-x-in-50 motion-duration-150'
+                        : 'motion-translate-x-out-100 motion-duration-200 hidden'}`}
+                >
+                    {name.split(' ')[0]}
+                </p>
+            </div>
         </nav>
     );
 }
@@ -61,11 +72,11 @@ function MobileSidebar() {
     );
 }
 
-export default function Sidebar() {
+export default function Sidebar({ name }: { name: string }) {
     return (
         <>
             <div className="hidden md:block">
-                <DesktopSidebar />
+                <DesktopSidebar name={name} />
             </div>
             <div className="block md:hidden">
                 <MobileSidebar />
