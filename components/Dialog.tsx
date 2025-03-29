@@ -29,19 +29,21 @@ export default function Dialog({ trigger, children, title, submit, handleSubmit 
             {mounted && isOpen && createPortal(
                 <button
                     onClick={handleClose}
-                    className="motion-preset-focus-md bg-black/20 backdrop-blur-sm fixed inset-0 w-full h-full z-50 flex justify-center items-center"
+                    className="motion-preset-focus-md motion-duration-150 bg-black/20 fixed inset-0 w-full h-full z-50 
+                    flex justify-center items-center cursor-default"
                 >
                     <div
                         role="button"
                         tabIndex={0}
                         onKeyDown={(event) => {
-                            if(event.key === 'Escape'){
+                            if (event.key === 'Escape') {
                                 handleClose();
                             }
                         }}
                         onClick={(e: React.MouseEvent) => e.stopPropagation()}
-                        className="relative flex flex-col items-center justify-center bg-gradient-to-t from-background/80 to-background/20 border border-primary p-4 rounded-2xl 
-                        shadow-lg max-w-md w-full m-4 overflow-y-auto">
+                        className="motion-scale-in-75 motion-duration-150 relative flex flex-col items-start justify-start
+                        bg-background border border-primary p-4 rounded-2xl transition-all
+                        shadow-lg hover:shadow-xl hover:shadow-primary/25 max-w-xl w-full m-4 overflow-y-auto cursor-default">
                         <div className="flex w-full justify-between items-center border-b border-b-primary/20">
                             <h1 className="text-xl font-bold font-righteous">
                                 {title || 'Title'}

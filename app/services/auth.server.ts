@@ -12,7 +12,7 @@ export type User = {
 };
 
 // Create authenticator instance
-export const authenticator = new Authenticator<User>(sessionStorage);
+export const authenticator = new Authenticator<User | undefined>(sessionStorage);
 
 // Configure Google Strategy
 const googleStrategy = new GoogleStrategy(
@@ -22,32 +22,38 @@ const googleStrategy = new GoogleStrategy(
         callbackURL: `${process.env.SITE_URL}/auth/google/callback`
     },
     async ({ profile }) => {
-
         const email = profile.emails[0].value;
-
         const prisma = new PrismaClient();
-        const userEmail = await prisma.user.findUnique({
-            where: { email: email }
-        })
-        console.log(userEmail);
-        if (userEmail) {
-            console.log("User Exists!!");
-        } else {
-            const user = await prisma.user.create({
-                data: {
-                    id: createId(),
-                    name: profile.displayName,
-                    email: email
-                }
-            });
-            console.log("new User Added", user);
+        const cuid = createId();
+
+        try {
+            const user = await prisma.user.findUnique({
+                where: { email: email }
+            })
+            console.log(user);
+
+            if (!user) {
+                const user = await prisma.user.create({
+                    data: {
+                        id: cuid,
+                        name: profile.displayName,
+                        email: email
+                    }
+                });
+                console.log("new User Added", user);
+            } else {
+                console.log("User Exists!!", user);
+            }
+            return {
+                id: cuid,
+                email: email,
+                name: profile.displayName,
+            };
+        } catch (error) {
+            console.log('Error in auth', error);
+        } finally {
+            await prisma.$disconnect();
         }
-        await prisma.$disconnect();
-        return {
-            id: profile.id,
-            email: email,
-            name: profile.displayName
-        };
     }
 );
 

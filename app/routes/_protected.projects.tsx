@@ -1,15 +1,39 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { PrismaClient } from "@prisma/client";
+import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { Form } from "@remix-run/react";
 import Button from "components/Button";
 import Dialog from "components/Dialog";
 import { Folders, PackagePlus } from "lucide-react";
-import { authenticator } from "~/services/auth.server";
+import { getUser } from "~/utils/actions";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const user = await authenticator.isAuthenticated(request, {
-        failureRedirect: "/"
-    });
+    const { user } = await getUser(request);
+    console.log(user?.id);
     return { user };
 };
+
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+    const prisma = new PrismaClient();
+    const formData = await request.formData();
+    const { user } = await getUser(request);
+    const projectName = String(formData.get('projectName'));
+    const project = await prisma.project.create({
+        data: {
+            name: projectName,
+            members: {
+                create: {
+                    user: { connect: { email: user?.email } },
+                    role: 'ADMIN'
+                }
+            }
+        }
+    })
+    console.log(project)
+
+    prisma.$disconnect;
+    return { project };
+}
 
 
 export default function Page() {
@@ -19,6 +43,7 @@ export default function Page() {
                 <div className="w-full flex items-center justify-between">
                     <h1 className="text-4xl font-righteous">My Projects</h1>
                     <Dialog
+                        title="New Project"
                         trigger={
                             <Button>
                                 <div className="flex justify-center items-center gap-1">
@@ -28,7 +53,27 @@ export default function Page() {
                             </Button>
                         }
                     >
-                        Hello there
+                        <Form
+                            method="post"
+                            action="/projects"
+                            className="flex flex-col w-full items-center gap-4"
+                        >
+                            <div className="w-full">
+                                <p className="w-full text-left font-semibold">Project Name</p>
+                                <input type="text"
+                                    name="projectName"
+                                    placeholder="Enter Project Name"
+                                    className="w-full bg-transparent p-2 text-lg border border-primary/40 rounded-xl 
+                                    focus:outline-none focus:border-accent placeholder:text-primary/40 transition-colors"
+                                />
+                            </div>
+                            <div className="flex w-full justify-between items-center">
+                                <div />
+                                <Button type="submit">
+                                    Submit
+                                </Button>
+                            </div>
+                        </Form>
                     </Dialog>
                 </div>
                 <Folders size={24} className="size-32 text-secondary" />
@@ -44,3 +89,4 @@ export default function Page() {
         </main>
     );
 }
+

@@ -1,10 +1,9 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { authenticator } from "~/services/auth.server";
+import { getUser } from "~/utils/actions";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const user = await authenticator.isAuthenticated(request, {
-        failureRedirect: "/"
-    });
+    const { user } = await getUser(request);
+    console.log(user);
     return { user };
 };
 
