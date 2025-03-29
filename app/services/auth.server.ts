@@ -6,7 +6,7 @@ import { createId } from "@paralleldrive/cuid2";
 
 // Define user type
 export type User = {
-    id: string;
+    id?: string;
     email: string;
     name: string;
 };
@@ -24,7 +24,6 @@ const googleStrategy = new GoogleStrategy(
     async ({ profile }) => {
         const email = profile.emails[0].value;
         const prisma = new PrismaClient();
-        const cuid = createId();
 
         try {
             const user = await prisma.user.findUnique({
@@ -33,6 +32,7 @@ const googleStrategy = new GoogleStrategy(
             console.log(user);
 
             if (!user) {
+                const cuid = createId();
                 const user = await prisma.user.create({
                     data: {
                         id: cuid,
@@ -45,7 +45,7 @@ const googleStrategy = new GoogleStrategy(
                 console.log("User Exists!!", user);
             }
             return {
-                id: cuid,
+                id: user?.id,
                 email: email,
                 name: profile.displayName,
             };
