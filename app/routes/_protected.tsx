@@ -13,7 +13,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Layout() {
     const { user } = useLoaderData<typeof loader>();
-    const name = user.name;
+    const name = user?.name || "";
     return (
         <main className="flex h-full">
             <Sidebar name={name} />
