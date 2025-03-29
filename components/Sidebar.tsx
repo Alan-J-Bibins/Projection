@@ -41,7 +41,7 @@ function DesktopSidebar({ name }: { name: string }) {
                 <SidebarItem href="/teams" label="Teams" Icon={UsersRound} isExpanded={isExpanded} />
                 <SidebarItem href="/settings" label="Settings" Icon={SlidersHorizontal} isExpanded={isExpanded} />
             </div>
-            <div className={`grid gap-2 p-4 justify-items-start items-center content-center transition-all duration-200
+            <Link to={'/profile'} className={`grid gap-2 p-4 justify-items-start items-center content-center transition-all duration-200
             ${isExpanded ? 'grid-cols-[auto_1fr] w-32' : 'grid-cols-1 w-14'}`}
             >
                 <div className="p-4 bg-white rounded-full" />
@@ -52,7 +52,7 @@ function DesktopSidebar({ name }: { name: string }) {
                 >
                     {name.split(' ')[0]}
                 </p>
-            </div>
+            </Link>
         </nav>
     );
 }
