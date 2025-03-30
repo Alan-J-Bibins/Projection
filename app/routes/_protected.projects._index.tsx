@@ -1,14 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import { Await, Form, useLoaderData } from "@remix-run/react";
 import Button from "components/Button";
 import Dialog from "components/Dialog";
+import ProjectCard, { ProjectCardLoading } from "components/ProjectCard";
 import { Folders, PackagePlus } from "lucide-react";
+import { Suspense } from "react";
 import { getUser } from "~/utils/actions";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { user } = await getUser(request);
-
     const prisma = new PrismaClient();
     const projects = await prisma.project.findMany({
         where: {
@@ -57,7 +58,7 @@ export default function Page() {
     const { projects } = useLoaderData<typeof loader>();
     return (
         <main className="flex flex-col justify-start items-center gap-8">
-            <section className="w-full flex flex-col items-center">
+            <section className="w-full flex flex-col items-center gap-4">
                 <div className="w-full flex items-center justify-between">
                     <h1 className="text-4xl font-righteous">My Projects</h1>
                     <Dialog
@@ -94,22 +95,28 @@ export default function Page() {
                         </Form>
                     </Dialog>
                 </div>
-                {projects.length === 0 && (
+                {projects.length === 0 ? (
                     <>
                         <Folders size={24} className="size-32 text-secondary" />
                         <span className="text-secondary">Oops! Looks like you haven&apos;t made any projects</span>
                     </>
-                )}
-                {projects.length !== 0 && (
-                    <div className="grid grid-cols-4 gap-4 w-full">
-                        {projects.map((project, index) => {
-                            return (
-                                <Link to={`/projects/${project.id}`} key={index}>
-                                    {project.name}
-                                </Link>
-                            );
-                        })}
-                    </div>
+                ) : (
+                    <Suspense fallback={<Loading />}>
+                        <Await resolve={projects}>
+                            <div className="grid grid-cols-4 gap-4 w-full">
+                                {projects.map((project, index) => {
+                                    return (
+                                        <ProjectCard
+                                            to={`/projects/${project.id}`}
+                                            key={index}
+                                            label={project.name}
+                                            id={project.id}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </Await>
+                    </Suspense>
                 )}
             </section>
             <section className="w-full flex flex-col items-center">
@@ -123,3 +130,13 @@ export default function Page() {
     );
 }
 
+function Loading() {
+    return (
+        <div className="grid grid-cols-4 gap-4 w-full">
+            <ProjectCardLoading />
+            <ProjectCardLoading />
+            <ProjectCardLoading />
+            <ProjectCardLoading />
+        </div>
+    );
+}
