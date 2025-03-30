@@ -5,7 +5,9 @@ export default function Layout() {
     return (
         <>
             <Outlet />
-            <Dock />
+            <div className="absolute bottom-4 flex justify-center w-full">
+                <Dock />
+            </div>
         </>
     )
 }

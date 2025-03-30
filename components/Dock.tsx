@@ -3,7 +3,7 @@ import { BotMessageSquare, ChartBarBig, LayoutDashboard, LucideIcon, SquareDashe
 
 export default function Dock() {
     return (
-        <div className="absolute bottom-8 left-1/2 w-fit flex items-center gap-4">
+        <div className="w-fit flex justify-center items-center gap-4">
             <DockItem Icon={LayoutDashboard} to='' />
             <DockItem Icon={SquareDashedKanban} to='/kanban' />
             <DockItem Icon={ChartBarBig} to='/timeline' />
@@ -18,6 +18,7 @@ function DockItem({ Icon, to }: { Icon: LucideIcon, to: string }) {
     return (
         <button
             onClick={() => { navigate(`.${to}`) }}
+            className="p-4"
         >
             <Icon size={24} />
         </button>
