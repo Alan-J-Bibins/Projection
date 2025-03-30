@@ -57,7 +57,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function Page() {
     const { projects } = useLoaderData<typeof loader>();
     return (
-        <main className="flex flex-col justify-start items-center gap-8">
+        <main className="flex flex-col justify-start items-center gap-8 w-full">
             <section className="w-full flex flex-col items-center gap-4">
                 <div className="w-full flex items-center justify-between">
                     <h1 className="text-4xl font-righteous">My Projects</h1>

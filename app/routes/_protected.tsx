@@ -17,7 +17,7 @@ export default function Layout() {
     return (
         <main className="flex h-full">
             <Sidebar name={name} />
-            <div className="space-y-2 bg-gradient-to-r from-secondary/20 to-secondary/35 border-l border-primary/20 p-8 rounded-l-2xl w-full h-full">
+            <div className="flex flex-col justify-start gap-4 items-start overflow-hidden bg-gradient-to-r from-secondary/20 to-secondary/35 border-l border-primary/20 p-8 pb-0 rounded-l-2xl w-full h-full">
                 <div className="w-full flex gap-4 items-center">
                     <Searchbar />
                     <ThemeToggle />
