@@ -13,16 +13,16 @@ export default function KanbanBox({
 }) {
 
     return (
-        <div className="flex items-start justify-start rounded-2xl p-4 border border-gray-300">
-            <div className="flex items-center justify-between mb-2">
+        <div className="flex flex-col items-start justify-start rounded-2xl p-4 border border-gray-300">
+            <div className="flex w-full items-center justify-between mb-2">
                 <h3 className="font-bold text-lg">{task_name}</h3>
                 <img src={logo} alt="logo" className="w-6 h-6 rounded-full" />
             </div>
-            <hr></hr>
+            <hr className="w-full"></hr>
             <p className="text-sm mb-4">
                 {task_description}
             </p>
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex w-full justify-between items-center mb-2">
            
             <div className="flex flex-wrap gap-2 mb-4">
                 {tags.map((tag, index) => (
