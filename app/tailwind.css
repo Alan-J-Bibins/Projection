@@ -12,20 +12,21 @@ body {
 }
 
 @layer base {
-  :root {
-    --text: 11 12 14;
-    --background: 248 249 252;
-    --primary: 9 42 119;
-    --secondary: 141 158 195;
-    --accent: 149 11 9;
-  }
-  .dark {
-    --text: 241 242 244;
-    --background: 3 4 7;
-    --primary: 136 169 246;
-    --secondary: 60 76 114;
-    --accent: 246 108 106;
-  }
+    :root {
+        --text: 11 12 14;
+        --background: 248 249 252;
+        --primary: 9 42 119;
+        --secondary: 141 158 195;
+        --accent: 149 11 9;
+    }
+
+    .dark {
+        --text: 241 242 244;
+        --background: 3 4 7;
+        --primary: 136 169 246;
+        --secondary: 60 76 114;
+        --accent: 246 108 106;
+    }
 
     .font-outfit {
         font-weight: 300;
@@ -35,4 +36,12 @@ body {
 
 .lucide {
     stroke-width: 1.5;
+}
+
+.scrollbar-gutter-auto {
+    scrollbar-gutter: auto;
+}
+
+.scrollbar-gutter-stable {
+    scrollbar-gutter: stable;
 }
