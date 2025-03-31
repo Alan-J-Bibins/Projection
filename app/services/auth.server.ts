@@ -21,7 +21,7 @@ const googleStrategy = new GoogleStrategy(
             const user = await prisma.user.findUnique({
                 where: { email: email }
             })
-            console.log(user);
+            console.log("Ooh?", user);
 
             if (!user) {
                 const user = await prisma.user.create({
@@ -31,10 +31,11 @@ const googleStrategy = new GoogleStrategy(
                     }
                 });
                 console.log("new User Added", user);
+                return user;
             } else {
                 console.log("User Exists!!", user);
+                return user;
             }
-            return user;
         } catch (error) {
             console.log('Error in auth', error);
         } finally {
