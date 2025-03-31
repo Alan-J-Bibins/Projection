@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
+import Button from "components/Button";
 import { getUser } from "~/utils/actions";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -8,10 +9,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function Layout() {
+    const { user } = useLoaderData<typeof loader>();
     return (
         <main className="h-full">
+            <h3 className="text-xl">Username: {user.name}</h3>
+            <p>Email: {user.email}</p>
             <Form action="/logout" method="post">
-                <button type="submit">Logout</button>
+                <Button type="submit">Logout</Button>
             </Form>
 
         </main>
