@@ -10,21 +10,26 @@ import { getUser } from "~/utils/actions";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { user } = await getUser(request);
-    const prisma = new PrismaClient();
-    const projects = await prisma.project.findMany({
-        where: {
-            members: {
-                some: {
-                    userId: user?.id,
+    console.log("Enthada", user);
+    if (!user || !user.id) {
+        return { ok: false, projects: [] };
+    } else {
+        const prisma = new PrismaClient();
+        const projects = await prisma.project.findMany({
+            where: {
+                members: {
+                    some: {
+                        userId: user?.id,
+                    }
                 }
             }
-        }
-    })
-    console.log(user?.id);
-    console.log("Projects", projects);
-    await prisma.$disconnect();
-    return { user, projects };
-};
+        })
+        console.log(user?.id);
+        console.log("Projects", projects);
+        await prisma.$disconnect();
+        return { ok: true, user, projects };
+    }
+}
 
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -32,9 +37,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
     const { user } = await getUser(request);
     const projectName = String(formData.get('projectName'));
+    const projectDesc = String(formData.get('projectDesc'));
     const project = await prisma.project.create({
         data: {
             name: projectName,
+            description: projectDesc,
             members: {
                 create: {
                     user: { connect: { email: user?.email } },
@@ -55,7 +62,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 
 export default function Page() {
-    const { projects } = useLoaderData<typeof loader>();
+    const { ok, projects } = useLoaderData<typeof loader>();
+    console.log(ok ? 'User exists!' : 'User Does Not Exist');
     return (
         <main className="flex flex-col justify-start items-center gap-8 w-full">
             <section className="w-full flex flex-col items-center gap-4">
@@ -75,14 +83,22 @@ export default function Page() {
                         <Form
                             method="post"
                             action="/projects"
-                            className="flex flex-col w-full items-center gap-4"
+                            className="flex flex-col w-full items-center gap-4 mt-2"
                         >
-                            <div className="w-full">
+                            <div className="w-full space-y-2 h-full group">
                                 <p className="w-full text-left font-semibold">Project Name</p>
                                 <input type="text"
                                     name="projectName"
                                     placeholder="Enter Project Name"
-                                    className="w-full bg-transparent p-2 text-lg border border-primary/40 rounded-xl 
+                                    className="w-full bg-transparent p-2 text-lg border border-primary/40 rounded-xl
+                                    focus:outline-none focus:border-accent placeholder:text-primary/40 transition-colors"
+                                    required
+                                />
+                                <p className="w-full text-left font-semibold">Project Description</p>
+                                <textarea
+                                    name="projectDesc"
+                                    placeholder="Enter Project Description"
+                                    className="w-full bg-transparent p-2 text-lg border border-primary/40 rounded-xl resize-none h-auto
                                     focus:outline-none focus:border-accent placeholder:text-primary/40 transition-colors"
                                 />
                             </div>
@@ -95,29 +111,32 @@ export default function Page() {
                         </Form>
                     </Dialog>
                 </div>
-                {projects.length === 0 ? (
-                    <>
-                        <Folders size={24} className="size-32 text-secondary" />
-                        <span className="text-secondary">Oops! Looks like you haven&apos;t made any projects</span>
-                    </>
-                ) : (
-                    <Suspense fallback={<Loading />}>
-                        <Await resolve={projects}>
-                            <div className="grid grid-cols-4 gap-4 w-full">
-                                {projects.map((project, index) => {
-                                    return (
-                                        <ProjectCard
-                                            to={`/projects/${project.id}`}
-                                            key={index}
-                                            label={project.name}
-                                            id={project.id}
-                                        />
-                                    );
-                                })}
-                            </div>
-                        </Await>
-                    </Suspense>
-                )}
+                <div className="w-full max-h-80 overflow-y-auto">
+                    {projects.length === 0 ? (
+                        <div className="flex flex-col w-full justify-center items-center">
+                            <Folders size={24} className="size-32 text-secondary" />
+                            <span className="text-secondary">Oops! Looks like you haven&apos;t made any projects</span>
+                        </div>
+                    ) : (
+                        <Suspense fallback={<Loading />}>
+                            <Await resolve={projects}>
+                                <div className="grid grid-cols-4 gap-4 w-full py-4">
+                                    {projects.map((project, index) => {
+                                        return (
+                                            <ProjectCard
+                                                to={`/projects/${project.id}`}
+                                                key={index}
+                                                label={project.name}
+                                                id={project.id}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </Await>
+                        </Suspense>
+                    )}
+                </div>
+
             </section>
             <section className="w-full flex flex-col items-center">
                 <div className="w-full flex items-center justify-between">

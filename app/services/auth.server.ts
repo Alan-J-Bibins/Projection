@@ -1,18 +1,10 @@
 import { Authenticator } from "remix-auth";
 import { GoogleStrategy } from "remix-auth-google";
 import { sessionStorage } from "./session.server";
-import { PrismaClient } from "@prisma/client";
-import { createId } from "@paralleldrive/cuid2";
-
-// Define user type
-export type User = {
-    id?: string;
-    email: string;
-    name: string;
-};
+import { PrismaClient, User } from "@prisma/client";
 
 // Create authenticator instance
-export const authenticator = new Authenticator<User | undefined>(sessionStorage);
+export const authenticator = new Authenticator<User | undefined | null>(sessionStorage);
 
 // Configure Google Strategy
 const googleStrategy = new GoogleStrategy(
@@ -32,10 +24,8 @@ const googleStrategy = new GoogleStrategy(
             console.log(user);
 
             if (!user) {
-                const cuid = createId();
                 const user = await prisma.user.create({
                     data: {
-                        id: cuid,
                         name: profile.displayName,
                         email: email
                     }
@@ -44,11 +34,7 @@ const googleStrategy = new GoogleStrategy(
             } else {
                 console.log("User Exists!!", user);
             }
-            return {
-                id: user?.id,
-                email: email,
-                name: profile.displayName,
-            };
+            return user;
         } catch (error) {
             console.log('Error in auth', error);
         } finally {
