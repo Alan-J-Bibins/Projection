@@ -5,12 +5,30 @@ import Dock from "components/Dock";
 import { getUser } from "~/utils/actions";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-    const user = await getUser(request);
+    const { user } = await getUser(request);
     const prisma = new PrismaClient();
     const project = await prisma.project.findUnique({
-        where: { id: params.projectID }
+        where: {
+            id: params.projectID
+        },
+        include: {
+            members: {
+                where: {
+                    userId: user.id
+                },
+                select: {
+                    role: true
+                }
+            }
+        }
     })
-    console.log("Ze Project", project);
+    if (!project) {
+        throw new Response('Project Not Found', { status: 404 });
+    }
+    if (project.members.length === 0) {
+        throw new Response('Forbidden - Not A Project Member', { status: 403 });
+    }
+    console.log("Ze Project while we are in layout", project);
     return { user, project };
 }
 
