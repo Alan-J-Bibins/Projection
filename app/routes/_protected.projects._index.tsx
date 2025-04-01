@@ -10,7 +10,6 @@ import { getUser } from "~/utils/actions";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { user } = await getUser(request);
-    console.log("Enthada", user);
     if (!user || !user.id) {
         return { ok: false, projects: [] };
     } else {
@@ -24,7 +23,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
                 }
             }
         })
-        console.log(user?.id);
+        console.log("User", user);
         console.log("Projects", projects);
         await prisma.$disconnect();
         return { ok: true, user, projects };

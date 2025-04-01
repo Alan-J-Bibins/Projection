@@ -35,7 +35,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 export const action = async ({ request, params }: ActionFunctionArgs) => {
     const { user } = await getUser(request);
     const prisma = new PrismaClient();
-    const projectId = params.projectId;
+    const projectId = params.projectId || "";
     // Debug log to verify values
     console.log("Action params:", {
         projectId: projectId,
@@ -54,8 +54,18 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         if (!membership) {
             throw new Response('Forbidden', { status: 403 })
         }
+        await prisma.projectMember.delete({
+            where: {
+                id: membership.id,
+                projectId: projectId,
+                role: 'ADMIN'
+            }
+        })
+
         await prisma.project.delete({
-            where: { id: params.projectId },
+            where: {
+                id: projectId
+            }
         })
         console.log("Project Deleted");
         return redirect('/projects');
@@ -67,7 +77,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     }
 }
 
-export default function Page() {
+export default function Layout() {
     const { project } = useLoaderData<typeof loader>();
     return (
         <div className="relative w-full h-full flex flex-col gap-4 overflow-hidden">
