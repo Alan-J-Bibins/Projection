@@ -38,15 +38,15 @@ export default function Dialog({ trigger, children, title, submit, handleSubmit 
             {mounted && isOpen && createPortal(
                 <button
                     onClick={handleClose}
-                    className={`${isExiting ? 'motion-opacity-out-0' : 'motion-preset-focus-md'} motion-duration-150 bg-black/20 fixed inset-0 w-full h-full z-50 
+                    className={`${isExiting ? 'motion-opacity-out-0' : 'motion-preset-focus-md'} motion-duration-150 bg-black/20 fixed inset-0 w-full h-full z-40 
                     flex justify-center items-center cursor-default`}
                 >
                     <div
                         role="button"
                         tabIndex={0}
                         onKeyDown={(event) => {
-                            if (event.key === 'Escape') {
-                                handleClose();
+                            if (event.key === 'Space') {
+                                console.log("HI")
                             }
                         }}
                         onClick={(e: React.MouseEvent) => e.stopPropagation()}

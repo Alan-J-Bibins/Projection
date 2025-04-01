@@ -74,6 +74,7 @@ export default function App() {
     return (
         <>
             {navigation.state === 'loading' && (<Loader />)}
+            {navigation.state === 'submitting' && (<Loader />)}
             <Outlet />
         </>
     );
