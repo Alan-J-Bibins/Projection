@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react"
 import Dock from "components/Dock";
 import { getUser } from "~/utils/actions";
@@ -9,7 +9,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     const prisma = new PrismaClient();
     const project = await prisma.project.findUnique({
         where: {
-            id: params.projectID
+            id: params.projectId
         },
         include: {
             members: {
@@ -30,6 +30,41 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     }
     console.log("Ze Project while we are in layout", project);
     return { user, project };
+}
+
+export const action = async ({ request, params }: ActionFunctionArgs) => {
+    const { user } = await getUser(request);
+    const prisma = new PrismaClient();
+    const projectId = params.projectId;
+    // Debug log to verify values
+    console.log("Action params:", {
+        projectId: projectId,
+        userId: user?.id,
+        routeParamName: Object.keys(params)
+    });
+
+    try {
+        const membership = await prisma.projectMember.findFirst({
+            where: {
+                userId: user.id,
+                projectId: projectId,
+                role: 'ADMIN'
+            }
+        })
+        if (!membership) {
+            throw new Response('Forbidden', { status: 403 })
+        }
+        await prisma.project.delete({
+            where: { id: params.projectId },
+        })
+        console.log("Project Deleted");
+        return redirect('/projects');
+    } catch (error) {
+        console.log('Error in Deletion', error);
+        throw new Response("Delete Failed", { status: 500 })
+    } finally {
+        await prisma.$disconnect();
+    }
 }
 
 export default function Page() {
