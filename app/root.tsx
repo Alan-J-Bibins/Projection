@@ -4,13 +4,14 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
+    useNavigation,
 } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
 
 import './tailwind.css';
-import { ThemeToggle } from 'components/ThemeToggle';
 import { CookiesProvider } from 'react-cookie';
 import { useEffect } from 'react';
+import Loader from 'components/Loader';
 
 export const links: LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -61,6 +62,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+    const navigation = useNavigation();
     useEffect(() => {
         const theme = document.cookie.includes('theme=dark') ? 'dark' : 'light';
         if (theme === 'dark') {
@@ -69,5 +71,11 @@ export default function App() {
             document.documentElement.classList.remove('dark');
         }
     })
-    return <Outlet />;
+    return (
+        <>
+            {navigation.state === 'loading' && (<Loader />)}
+            <Outlet />
+        </>
+    );
+
 }
