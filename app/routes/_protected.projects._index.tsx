@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { Await, Form, useLoaderData } from "@remix-run/react";
+import { Await, Form, useLoaderData, useNavigate, useNavigation } from "@remix-run/react";
 import Button from "components/Button";
 import Dialog from "components/Dialog";
 import ProjectCard, { ProjectCardLoading } from "components/ProjectCard";
@@ -62,6 +62,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Page() {
     const { ok, projects } = useLoaderData<typeof loader>();
+    const navigation = useNavigation();
     console.log(ok ? 'User exists!' : 'User Does Not Exist');
     return (
         <main className="flex flex-col justify-start items-center gap-8 w-full">
@@ -103,8 +104,12 @@ export default function Page() {
                             </div>
                             <div className="flex w-full justify-between items-center">
                                 <div />
-                                <Button type="submit">
-                                    Submit
+                                <Button
+                                    type="submit"
+                                    classNameAppend="disabled:opacity-55 disabled:border-accent disabled:shadow-none disabled:text-accent disabled:cursor-not-allowed"
+                                    disabled={navigation.state === 'submitting' || navigation.state === 'loading'}
+                                >
+                                    {navigation.state === 'submitting' || navigation.state === 'loading' ? 'Submitting...' : 'Submit'}
                                 </Button>
                             </div>
                         </Form>

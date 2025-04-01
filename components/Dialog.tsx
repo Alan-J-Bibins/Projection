@@ -13,14 +13,6 @@ export default function Dialog({ trigger, children, title, submit, handleSubmit 
     const [mounted, setMounted] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
 
-    const handleExit = () => {
-        setIsExiting(true);
-        setTimeout(() => {
-            // Actually remove the component after animation completes
-            setIsOpen(false);
-            setIsExiting(false);
-        }, 150);
-    };
 
     useEffect(() => {
         setMounted(true);
@@ -28,7 +20,14 @@ export default function Dialog({ trigger, children, title, submit, handleSubmit 
     }, []);
 
     const handleOpen = () => setIsOpen(true);
-    const handleClose = () => handleExit();
+    const handleClose = () => {
+        setIsExiting(true);
+        setTimeout(() => {
+            // Actually remove the component after animation completes
+            setIsOpen(false);
+            setIsExiting(false);
+        }, 150);
+    };
 
     return (
         <>
@@ -70,8 +69,9 @@ export default function Dialog({ trigger, children, title, submit, handleSubmit 
                         <div className="flex justify-between items-center w-full">
                             <div />
                             <button onClick={() => {
-                                if (handleSubmit) handleSubmit();
                                 handleClose();
+                                if (handleSubmit) handleSubmit();
+                                console.log("wtf")
                             }}>
                                 {submit}
                             </button>
