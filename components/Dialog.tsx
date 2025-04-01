@@ -11,6 +11,16 @@ export default function Dialog({ trigger, children, title, submit, handleSubmit 
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [isExiting, setIsExiting] = useState(false);
+
+    const handleExit = () => {
+        setIsExiting(true);
+        setTimeout(() => {
+            // Actually remove the component after animation completes
+            setIsOpen(false);
+            setIsExiting(false);
+        }, 150);
+    };
 
     useEffect(() => {
         setMounted(true);
@@ -18,7 +28,7 @@ export default function Dialog({ trigger, children, title, submit, handleSubmit 
     }, []);
 
     const handleOpen = () => setIsOpen(true);
-    const handleClose = () => setIsOpen(false);
+    const handleClose = () => handleExit();
 
     return (
         <>
@@ -29,8 +39,8 @@ export default function Dialog({ trigger, children, title, submit, handleSubmit 
             {mounted && isOpen && createPortal(
                 <button
                     onClick={handleClose}
-                    className="motion-preset-focus-md motion-duration-150 bg-black/20 fixed inset-0 w-full h-full z-50 
-                    flex justify-center items-center cursor-default"
+                    className={`${isExiting ? 'motion-opacity-out-0' : 'motion-preset-focus-md'} motion-duration-150 bg-black/20 fixed inset-0 w-full h-full z-50 
+                    flex justify-center items-center cursor-default`}
                 >
                     <div
                         role="button"
@@ -41,9 +51,10 @@ export default function Dialog({ trigger, children, title, submit, handleSubmit 
                             }
                         }}
                         onClick={(e: React.MouseEvent) => e.stopPropagation()}
-                        className="motion-scale-in-75 motion-duration-150 relative flex flex-col items-start justify-start
+                        className={`${isExiting ? 'motion-scale-out-75 motion-opacity-out-0' : 'motion-scale-in-75 motion-opacity-in-0'}
+                        relative flex flex-col items-start justify-start motion-duration-150
                         bg-background border border-primary p-4 rounded-2xl transition-all
-                        shadow-lg hover:shadow-xl hover:shadow-primary/25 max-w-xl w-full m-4 overflow-y-auto cursor-default">
+                        shadow-lg hover:shadow-xl hover:shadow-primary/25 max-w-xl w-full m-4 overflow-y-auto cursor-default`}>
                         <div className="flex w-full justify-between items-center border-b border-b-primary/20">
                             <h1 className="text-xl font-bold font-righteous">
                                 {title || 'Title'}
