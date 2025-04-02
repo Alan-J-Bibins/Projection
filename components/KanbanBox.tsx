@@ -12,7 +12,7 @@ export default function KanbanBox({
     date: string;
 }) {
     return (
-        <div className="flex flex-col items-start justify-start rounded-2xl p-4 border border-gray-300 border-primary/20 rounded-2xl bg-secondary/20 bg-gradient-to-b from-transparent to-primary/10 shadow-primary/25 shadow-none hover:bg-gradient-to-t hover:from-accent/20 hover:to-transparent">
+        <div className="w-full flex flex-col items-start justify-start p-4 border border-gray-300 border-primary/20 rounded-2xl bg-secondary/20 bg-gradient-to-b from-transparent to-primary/10 shadow-primary/25 shadow-none hover:bg-gradient-to-t hover:from-accent/20 hover:to-transparent">
             <div className="flex w-full items-center justify-between mb-2">
                 <h3 className="font-bold text-lg">{task_name}</h3>
                 <img src={logo} alt="logo" className="w-6 h-6 rounded-full" />

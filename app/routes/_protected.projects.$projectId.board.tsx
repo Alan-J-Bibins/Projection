@@ -67,7 +67,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     console.log("Intent", intent);
     const prisma = new PrismaClient;
     switch (intent) {
-        case 'add': {
+        case 'columnCreate': {
             const columnName = String(formData.get('columnName'));
             console.log(`Add ${columnName}`);
             const queryResponse = await prisma.column.create({
@@ -85,6 +85,19 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         case 'delete': {
             const columnName = formData.get('columnName');
             console.log(`Delete ${columnName}`);
+            break;
+        }
+        case 'taskCreate': {
+            const taskName = String(formData.get('taskName'));
+            const columnId = String(formData.get('columnId'));
+            console.log(`Add ${taskName}`);
+            const queryResponse = await prisma.task.create({
+                data: {
+                    name: taskName,
+                    columnId: columnId
+                }
+            });
+            console.log("Task Created", queryResponse);
             break;
         }
         default: {
@@ -125,7 +138,7 @@ export default function Kanban() {
                             <Button
                                 type="submit"
                                 name='intent'
-                                value='add'
+                                value='columnCreate'
                                 classNameAppend="disabled:opacity-55 disabled:border-accent disabled:shadow-none disabled:text-accent disabled:cursor-not-allowed"
                                 disabled={
                                     navigation.state === 'submitting' ||
@@ -149,10 +162,9 @@ export default function Kanban() {
             >
                 {board?.Column.map((column, index) => {
                     return <KanbanColumn
+                        column={column}
                         projectId={projectId}
-                        columnId={column.id}
                         key={index}
-                        name={column.name}
                         tasks={board.Column[index].Task}
                     />;
                 })}

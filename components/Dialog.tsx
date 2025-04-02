@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 
 export default function Dialog({
     trigger,
+    triggerClassName,
     children,
     title,
     submit,
@@ -11,6 +12,7 @@ export default function Dialog({
 }: {
     children: React.ReactNode;
     trigger: React.ReactNode;
+    triggerClassName?: string,
     submit?: React.ReactNode;
     handleSubmit?: () => void;
     title?: string;
@@ -36,7 +38,7 @@ export default function Dialog({
 
     return (
         <>
-            <button onClick={handleOpen} className="cursor-pointer">
+            <button onClick={handleOpen} className={`cursor-pointer ${triggerClassName}`}>
                 {trigger}
             </button>
 
