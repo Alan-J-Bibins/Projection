@@ -1,14 +1,14 @@
-import { Board, PrismaClient } from "@prisma/client";
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { Form, useLoaderData, useNavigation } from "@remix-run/react";
-import Button from "components/Button";
-import Dialog from "components/Dialog";
-import Input from "components/Input";
-import KanbanBox from "components/KanbanBox";
-import { getUser } from "~/utils/actions";
+import { PrismaClient } from '@prisma/client';
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { Form, useLoaderData, useNavigation } from '@remix-run/react';
+import Button from 'components/Button';
+import Dialog from 'components/Dialog';
+import Input from 'components/Input';
+import KanbanBox from 'components/KanbanBox';
+import { getUser } from '~/utils/actions';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-    const projectId = params.projectId || "";
+    const projectId = params.projectId || '';
     const { user } = await getUser(request);
     const prisma = new PrismaClient();
 
@@ -19,60 +19,56 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
             include: {
                 Column: {
                     include: {
-                        Task: true
-                    }
-                }
-            }
+                        Task: true,
+                    },
+                },
+            },
         });
 
         // If board doesn't exist, create it
         if (!board) {
-            console.log("Creating the board:");
+            console.log('Creating the board:');
             board = await prisma.board.create({
                 data: {
-                    name: "Board",
+                    name: 'Board',
                     projectId: projectId,
                     Column: {
                         create: [
-                            { name: "To Do" },
-                            { name: "In Progress" },
-                            { name: "Done" },
+                            { name: 'To Do' },
+                            { name: 'In Progress' },
+                            { name: 'Done' },
                         ],
-                    }
+                    },
                 },
                 include: {
                     Column: {
                         include: {
-                            Task: true
-                        }
-                    }
-                }
+                            Task: true,
+                        },
+                    },
+                },
             });
-            console.log("Created Board", board);
+            console.log('Created Board', board);
         }
         return { user, projectId, board };
     } catch (error) {
-        console.log("Error in Kanban Page", error);
+        console.log('Error in Kanban Page', error);
         throw error;
     } finally {
         await prisma.$disconnect();
     }
-}
+};
 export default function Kanban() {
     const { projectId, board } = useLoaderData<typeof loader>();
     const navigation = useNavigation();
-    console.log("ZeBoard", board);
+    console.log('ZeBoard', board);
     return (
         <div className="space-y-4">
             <div className="w-full flex items-center justify-between">
                 <div />
                 <Dialog
                     title="New Column"
-                    trigger={
-                        <Button>
-                            New Column
-                        </Button>
-                    }
+                    trigger={<Button>New Column</Button>}
                 >
                     <Form
                         method="post"
@@ -92,23 +88,30 @@ export default function Kanban() {
                             <Button
                                 type="submit"
                                 classNameAppend="disabled:opacity-55 disabled:border-accent disabled:shadow-none disabled:text-accent disabled:cursor-not-allowed"
-                                disabled={navigation.state === 'submitting' || navigation.state === 'loading'}
+                                disabled={
+                                    navigation.state === 'submitting' ||
+                                    navigation.state === 'loading'
+                                }
                             >
-                                {navigation.state === 'submitting' || navigation.state === 'loading' ? 'Submitting...' : 'Submit'}
+                                {navigation.state === 'submitting' ||
+                                navigation.state === 'loading'
+                                    ? 'Submitting...'
+                                    : 'Submit'}
                             </Button>
                         </div>
                     </Form>
                 </Dialog>
             </div>
-            <div className="grid"
-                style={{ gridTemplateColumns: `repeat(${board?.Column.length}, minmax(0, 1fr))` }}
+            <div
+                className="grid"
+                style={{
+                    gridTemplateColumns: `repeat(${board?.Column.length}, minmax(0, 1fr))`,
+                }}
             >
                 {board?.Column.map((column, index) => {
-                    return (
-                        <p key={index}>{column.name}</p>
-                    );
+                    return <p key={index}>{column.name}</p>;
                 })}
             </div>
         </div>
-    )
+    );
 }

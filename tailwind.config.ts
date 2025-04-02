@@ -1,7 +1,10 @@
 import type { Config } from 'tailwindcss';
 
 export default {
-    content: ['./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}', './components/**/*'],
+    content: [
+        './app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}',
+        './components/**/*',
+    ],
     theme: {
         extend: {
             fontFamily: {
@@ -19,17 +22,21 @@ export default {
                 righteous: ['"Righteous"', 'sans-serif'],
             },
             colors: {
-                'text': 'rgb(var(--text))',
-                'background': 'rgb(var(--background))',
-                'primary': 'rgb(var(--primary))',
-                'secondary': 'rgb(var(--secondary))',
-                'accent': 'rgb(var(--accent))',
+                text: 'rgb(var(--text))',
+                background: 'rgb(var(--background))',
+                primary: 'rgb(var(--primary))',
+                secondary: 'rgb(var(--secondary))',
+                accent: 'rgb(var(--accent))',
             },
             backgroundImage: {
-                'active-gradient': 'linear-gradient(225deg, var(--Accent, #F66C6A) 0%, var(--Secondary, #3C4C72) 50%, var(--Secondary, #3C4C72) 75%, var(--Primary, #86A7F6) 100%);'
-            }
+                'active-gradient':
+                    'linear-gradient(225deg, var(--Accent, #F66C6A) 0%, var(--Secondary, #3C4C72) 50%, var(--Secondary, #3C4C72) 75%, var(--Primary, #86A7F6) 100%);',
+            },
         },
     },
-    plugins: [require('tailwindcss-motion'), require('tailwind-scrollbar-hide')],
-    darkMode: ['class']
+    plugins: [
+        require('tailwindcss-motion'),
+        require('tailwind-scrollbar-hide'),
+    ],
+    darkMode: ['class'],
 } satisfies Config;

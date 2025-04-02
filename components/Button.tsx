@@ -1,14 +1,15 @@
 export default function Button({
-    type = "button", children,
+    type = 'button',
+    children,
     disabled = false,
-    variant = "primary",
-    classNameAppend
+    variant = 'primary',
+    classNameAppend,
 }: {
-    classNameAppend?: string,
-    type?: 'button' | 'submit' | 'reset',
-    disabled?: boolean
-    children: React.ReactNode,
-    variant?: 'primary' | 'secondary' | 'critical'
+    classNameAppend?: string;
+    type?: 'button' | 'submit' | 'reset';
+    disabled?: boolean;
+    children: React.ReactNode;
+    variant?: 'primary' | 'secondary' | 'critical';
 }) {
     if (variant === 'primary') {
         return (

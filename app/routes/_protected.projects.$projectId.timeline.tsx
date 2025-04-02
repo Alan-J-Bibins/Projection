@@ -39,6 +39,5 @@ export default function Page() {
             <h1>hell</h1>
             <h1>hell</h1>
         </div>
-    )
+    );
 }
-

@@ -1,13 +1,17 @@
-import { PrismaClient } from "@prisma/client";
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { Await, Form, useLoaderData, useNavigation } from "@remix-run/react";
-import Button from "components/Button";
-import Dialog from "components/Dialog";
-import Input from "components/Input";
-import ProjectCard, { ProjectCardLoading } from "components/ProjectCard";
-import { Folders, PackagePlus } from "lucide-react";
-import { Suspense } from "react";
-import { getUser } from "~/utils/actions";
+import { PrismaClient } from '@prisma/client';
+import {
+    ActionFunctionArgs,
+    LoaderFunctionArgs,
+    redirect,
+} from '@remix-run/node';
+import { Await, Form, useLoaderData, useNavigation } from '@remix-run/react';
+import Button from 'components/Button';
+import Dialog from 'components/Dialog';
+import Input from 'components/Input';
+import ProjectCard, { ProjectCardLoading } from 'components/ProjectCard';
+import { Folders, PackagePlus } from 'lucide-react';
+import { Suspense } from 'react';
+import { getUser } from '~/utils/actions';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { user } = await getUser(request);
@@ -20,17 +24,16 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
                 members: {
                     some: {
                         userId: user?.id,
-                    }
-                }
-            }
-        })
-        console.log("User", user);
-        console.log("Projects", projects);
+                    },
+                },
+            },
+        });
+        console.log('User', user);
+        console.log('Projects', projects);
         await prisma.$disconnect();
         return { ok: true, user, projects };
     }
-}
-
+};
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const prisma = new PrismaClient();
@@ -45,21 +48,20 @@ export const action = async ({ request }: ActionFunctionArgs) => {
             members: {
                 create: {
                     user: { connect: { email: user?.email } },
-                    role: 'ADMIN'
-                }
-            }
-        }
-    })
-    console.log(project)
+                    role: 'ADMIN',
+                },
+            },
+        },
+    });
+    console.log(project);
 
     prisma.$disconnect;
     if (!project) {
         return redirect('/projects');
     } else {
-        return redirect(`/projects/${project.id}`)
+        return redirect(`/projects/${project.id}`);
     }
-}
-
+};
 
 export default function Page() {
     const { ok, projects } = useLoaderData<typeof loader>();
@@ -87,14 +89,18 @@ export default function Page() {
                             className="flex flex-col w-full items-center gap-4 mt-2"
                         >
                             <div className="w-full space-y-2 h-full group">
-                                <p className="w-full text-left font-semibold">Project Name</p>
+                                <p className="w-full text-left font-semibold">
+                                    Project Name
+                                </p>
                                 <Input
                                     type="text"
                                     name="projectName"
                                     placeholder="Enter Project Name"
                                     required={true}
                                 />
-                                <p className="w-full text-left font-semibold">Project Description</p>
+                                <p className="w-full text-left font-semibold">
+                                    Project Description
+                                </p>
                                 <textarea
                                     name="projectDesc"
                                     placeholder="Enter Project Description"
@@ -106,9 +112,15 @@ export default function Page() {
                                 <Button
                                     type="submit"
                                     classNameAppend="disabled:opacity-55 disabled:border-accent disabled:shadow-none disabled:text-accent disabled:cursor-not-allowed"
-                                    disabled={navigation.state === 'submitting' || navigation.state === 'loading'}
+                                    disabled={
+                                        navigation.state === 'submitting' ||
+                                        navigation.state === 'loading'
+                                    }
                                 >
-                                    {navigation.state === 'submitting' || navigation.state === 'loading' ? 'Submitting...' : 'Submit'}
+                                    {navigation.state === 'submitting' ||
+                                    navigation.state === 'loading'
+                                        ? 'Submitting...'
+                                        : 'Submit'}
                                 </Button>
                             </div>
                         </Form>
@@ -117,8 +129,14 @@ export default function Page() {
                 <div className="w-full max-h-80 overflow-y-auto">
                     {projects.length === 0 ? (
                         <div className="flex flex-col w-full justify-center items-center">
-                            <Folders size={24} className="size-32 text-secondary" />
-                            <span className="text-secondary">Oops! Looks like you haven&apos;t made any projects</span>
+                            <Folders
+                                size={24}
+                                className="size-32 text-secondary"
+                            />
+                            <span className="text-secondary">
+                                Oops! Looks like you haven&apos;t made any
+                                projects
+                            </span>
                         </div>
                     ) : (
                         <Suspense fallback={<Loading />}>
@@ -139,14 +157,15 @@ export default function Page() {
                         </Suspense>
                     )}
                 </div>
-
             </section>
             <section className="w-full flex flex-col items-center">
                 <div className="w-full flex items-center justify-between">
                     <h1 className="text-4xl font-righteous">Joined Projects</h1>
                 </div>
                 <Folders size={24} className="size-32 text-secondary" />
-                <span className="text-secondary">Oops! Looks like you haven&apos;t made any projects</span>
+                <span className="text-secondary">
+                    Oops! Looks like you haven&apos;t made any projects
+                </span>
             </section>
         </main>
     );

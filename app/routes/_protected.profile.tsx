@@ -1,7 +1,7 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
-import Button from "components/Button";
-import { getUser } from "~/utils/actions";
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { Form, useLoaderData } from '@remix-run/react';
+import Button from 'components/Button';
+import { getUser } from '~/utils/actions';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { user } = await getUser(request);
@@ -17,7 +17,6 @@ export default function Layout() {
             <Form action="/logout" method="post">
                 <Button type="submit">Logout</Button>
             </Form>
-
         </main>
     );
 }

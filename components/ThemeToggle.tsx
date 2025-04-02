@@ -1,12 +1,12 @@
-import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import { Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 export function ThemeToggle() {
     const [cookies, setCookie] = useCookies(['theme']);
     const [darkMode, setDarkMode] = useState<boolean>(() => {
         if (typeof window !== 'undefined') {
-            return cookies.theme === 'dark'
+            return cookies.theme === 'dark';
         }
         return false;
     });
@@ -26,8 +26,8 @@ export function ThemeToggle() {
             const newTheme = darkMode ? 'dark' : 'light';
             setCookie('theme', newTheme, {
                 path: '/',
-                maxAge: 365 * 24 * 60 * 60
-            })
+                maxAge: 365 * 24 * 60 * 60,
+            });
         }
     }, [darkMode, mounted, setCookie]);
 
@@ -43,8 +43,14 @@ export function ThemeToggle() {
             hover:shadow-lg hover:shadow-primary/25 hover:border-primary transition-all duration-150 ease-out
             "
         >
-            <Sun size={24} className={`absolute  ${darkMode ? 'motion-rotate-out-90 motion-opacity-out-0 motion-translate-y-out-100' : 'motion-rotate-in-90 motion-preset-focus-md -motion-translate-y-in-100'}`} />
-            <Moon size={24} className={`absolute ${darkMode ? 'motion-preset-focus-md -motion-rotate-in-90 -motion-translate-y-in-100' : '-motion-rotate-out-90 motion-opacity-out-0 motion-translate-y-out-100'}`} />
+            <Sun
+                size={24}
+                className={`absolute  ${darkMode ? 'motion-rotate-out-90 motion-opacity-out-0 motion-translate-y-out-100' : 'motion-rotate-in-90 motion-preset-focus-md -motion-translate-y-in-100'}`}
+            />
+            <Moon
+                size={24}
+                className={`absolute ${darkMode ? 'motion-preset-focus-md -motion-rotate-in-90 -motion-translate-y-in-100' : '-motion-rotate-out-90 motion-opacity-out-0 motion-translate-y-out-100'}`}
+            />
         </button>
     );
 }

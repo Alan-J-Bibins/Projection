@@ -1,20 +1,14 @@
-import { Form } from "@remix-run/react";
-import Dialog from "components/Dialog";
-import { Plus } from "lucide-react";
+import { Form } from '@remix-run/react';
+import Dialog from 'components/Dialog';
+import { Plus } from 'lucide-react';
 
 function Meetings() {
     return (
         <div className="flex flex-col w-full items-center justify-start bg-secondary/20 p-4 rounded-2xl border border-primary/20">
             <div className="flex justify-between items-center w-full">
                 <h2 className="text-2xl font-righteous">Meetings</h2>
-                <Dialog
-                    title="New Meeting"
-                    trigger={
-                        <Plus />
-                    }
-                >
-                    <Form>
-                    </Form>
+                <Dialog title="New Meeting" trigger={<Plus />}>
+                    <Form></Form>
                 </Dialog>
             </div>
         </div>

@@ -1,5 +1,5 @@
-import { Form } from "@remix-run/react";
-import Button from "components/Button";
+import { Form } from '@remix-run/react';
+import Button from 'components/Button';
 export const loader = () => {
     return null;
 };
@@ -11,4 +11,3 @@ export default function LoginButton() {
         </Form>
     );
 }
-

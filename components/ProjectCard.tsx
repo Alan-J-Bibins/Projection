@@ -1,7 +1,15 @@
-import { Link } from "@remix-run/react";
-import { ChevronRight } from "lucide-react";
+import { Link } from '@remix-run/react';
+import { ChevronRight } from 'lucide-react';
 
-export default function ProjectCard({ to, id, label }: { to: string, id: string, label: string }) {
+export default function ProjectCard({
+    to,
+    id,
+    label,
+}: {
+    to: string;
+    id: string;
+    label: string;
+}) {
     return (
         <Link
             to={to}
@@ -11,9 +19,12 @@ export default function ProjectCard({ to, id, label }: { to: string, id: string,
             "
         >
             <h4> {label} </h4>
-            <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            <ChevronRight
+                size={20}
+                className="group-hover:translate-x-1 transition-transform"
+            />
         </Link>
-    )
+    );
 }
 
 export function ProjectCardLoading() {
@@ -24,9 +35,11 @@ export function ProjectCardLoading() {
             hover:shadow-accent/25 hover:shadow-lg hover:border-b-accent hover:border-x-secondary/20 hover:text-accent hover:-translate-y-1 hover:bg-primary/10
             "
         >
-            <div className="w-full h-3 rounded-full bg-secondary animate-pulse"/>
-            <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            <div className="w-full h-3 rounded-full bg-secondary animate-pulse" />
+            <ChevronRight
+                size={20}
+                className="group-hover:translate-x-1 transition-transform"
+            />
         </div>
-    )
+    );
 }
-

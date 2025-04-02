@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const user = await authenticator.isAuthenticated(request, {
-        successRedirect: "/projects",
+        successRedirect: '/projects',
     });
     return { user };
 };
@@ -19,7 +19,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function Index() {
     return (
         <div className="flex flex-col h-full items-center justify-center">
-            <p className='font-righteous text-9xl text-accent motion-preset-focus-md motion-duration-150 motion-delay-1000'>Projection</p>
+            <p className="font-righteous text-9xl text-accent motion-preset-focus-md motion-duration-150 motion-delay-1000">
+                Projection
+            </p>
             <LoginButton />
         </div>
     );

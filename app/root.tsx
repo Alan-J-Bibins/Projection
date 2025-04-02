@@ -44,15 +44,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 const theme = document.cookie.includes('theme=dark') ? 'dark' : 'light';
                 document.documentElement.classList.toggle('dark', theme === 'dark');
               })()
-            `
+            `,
                     }}
                 />
             </head>
-            <body className='bg-background text-text font-outfit transition-colors duration-150 antialiased'>
+            <body className="bg-background text-text font-outfit transition-colors duration-150 antialiased">
                 <CookiesProvider>
-                    <main className='h-screen min-h-screen'>
-                        {children}
-                    </main>
+                    <main className="h-screen min-h-screen">{children}</main>
                 </CookiesProvider>
                 <ScrollRestoration />
                 <Scripts />
@@ -70,13 +68,12 @@ export default function App() {
         } else {
             document.documentElement.classList.remove('dark');
         }
-    })
+    });
     return (
         <>
-            {navigation.state === 'loading' && (<Loader />)}
-            {navigation.state === 'submitting' && (<Loader />)}
+            {navigation.state === 'loading' && <Loader />}
+            {navigation.state === 'submitting' && <Loader />}
             <Outlet />
         </>
     );
-
 }

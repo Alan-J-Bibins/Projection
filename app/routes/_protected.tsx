@@ -1,10 +1,10 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
-import BreadCrumbs from "components/BreadCrumbs";
-import Searchbar from "components/Searchbar";
-import Sidebar from "components/Sidebar";
-import { ThemeToggle } from "components/ThemeToggle";
-import { getUser } from "~/utils/actions";
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { Outlet, useLoaderData } from '@remix-run/react';
+import BreadCrumbs from 'components/BreadCrumbs';
+import Searchbar from 'components/Searchbar';
+import Sidebar from 'components/Sidebar';
+import { ThemeToggle } from 'components/ThemeToggle';
+import { getUser } from '~/utils/actions';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { user } = await getUser(request);
@@ -13,10 +13,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Layout() {
     const { user } = useLoaderData<typeof loader>();
-    const name = user.name || "";
+    const name = user.name || '';
     return (
         <main className="flex h-full">
-            <Sidebar name={name} pic={user.pic || ''}/>
+            <Sidebar name={name} pic={user.pic || ''} />
             <div className="flex flex-col justify-start gap-4 items-start overflow-hidden bg-gradient-to-r from-secondary/20 to-secondary/35 border-l border-primary/20 p-8 pb-0 rounded-l-2xl w-full h-full">
                 <div className="w-full flex gap-4 items-center">
                     <Searchbar />
