@@ -1,45 +1,79 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "cockroachdb"
-  url      = env("DATABASE_URL")
+    provider = "cockroachdb"
+    url      = env("DATABASE_URL")
 }
 
 enum crdb_internal_region {
-  aws_ap_south_1 @map("aws-ap-south-1")
+    aws_ap_south_1 @map("aws-ap-south-1")
 }
 
 enum Role {
-  ADMIN
-  MEMBER
+    ADMIN
+    MEMBER
 }
 
 model User {
-  id        String          @id @default(cuid())
-  email     String          @unique
-  name      String?
-  createdAt DateTime        @default(now())
-  Member    ProjectMember[]
+    id        String          @id @default(cuid())
+    email     String          @unique
+    name      String?
+    pic       String?
+    createdAt DateTime        @default(now())
+    updatedAt DateTime        @updatedAt
+    member    ProjectMember[]
 }
 
 model ProjectMember {
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId String
-  role      Role
-  createdAt DateTime @default(now())
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String
+    project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    projectId String
+    role      Role
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  @@unique([userId, projectId])
+    @@unique([userId, projectId])
 }
 
 model Project {
-  id          String          @id @default(cuid())
-  name        String
-  description String?
-  createdAt   DateTime        @default(now())
-  members     ProjectMember[]
+    id          String          @id @default(cuid())
+    name        String
+    description String?
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+    board       Board?
+    members     ProjectMember[]
+}
+
+model Board {
+    id        String   @id @default(cuid())
+    name      String
+    project   Project  @relation(fields: [projectId], references: [id])
+    projectId String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Column    Column[]
+}
+
+model Column {
+    id        String   @id @default(cuid())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    board     Board    @relation(fields: [boardId], references: [id])
+    boardId   String
+    Task      Task[]
+}
+
+model Task {
+    id        String   @id @default(cuid())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    column    Column   @relation(fields: [columnId], references: [id])
+    columnId  String
 }

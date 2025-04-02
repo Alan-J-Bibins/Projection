@@ -28,7 +28,7 @@ function SidebarItem({ href, Icon, label, isExpanded }: { href: string, label: s
     );
 }
 
-function DesktopSidebar({ name }: { name: string }) {
+function DesktopSidebar({ name, pic }: { name: string, pic?: string }) {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     return (
         <nav
@@ -44,7 +44,17 @@ function DesktopSidebar({ name }: { name: string }) {
             <Link to={'/profile'} className={`grid gap-2 p-4 justify-items-start items-center content-center transition-all duration-200
             ${isExpanded ? 'grid-cols-[auto_1fr] w-32' : 'grid-cols-1 w-14'}`}
             >
-                <div className="p-4 bg-white rounded-full" />
+                {pic ? (
+                    <div className="w-8 h-8 rounded-full overflow-hidden" >
+                        <img
+                            src={pic}
+                            alt="pfp"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                ) : (
+                    <div className="p-4 rounded-full bg-secondary dark:bg-text" />
+                )}
                 <p
                     className={`truncate w-14 ${isExpanded
                         ? 'motion-opacity-in-0 -motion-translate-x-in-50 motion-duration-150'
@@ -72,11 +82,11 @@ function MobileSidebar() {
     );
 }
 
-export default function Sidebar({ name }: { name: string }) {
+export default function Sidebar({ name, pic }: { name: string, pic?: string }) {
     return (
         <>
             <div className="hidden md:block">
-                <DesktopSidebar name={name} />
+                <DesktopSidebar name={name} pic={pic} />
             </div>
             <div className="block md:hidden">
                 <MobileSidebar />

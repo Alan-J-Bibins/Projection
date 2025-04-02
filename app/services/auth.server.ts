@@ -22,11 +22,13 @@ const googleStrategy = new GoogleStrategy(
                 where: { email: email }
             })
             console.log("Ooh?", user);
+            console.log("OHH?", profile);
 
             if (!user) {
                 const user = await prisma.user.create({
                     data: {
                         name: profile.displayName,
+                        pic: profile.photos[0].value,
                         email: email
                     }
                 });

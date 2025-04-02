@@ -1,4 +1,5 @@
 import { Form } from "@remix-run/react";
+import Button from "components/Button";
 export const loader = () => {
     return null;
 };
@@ -6,7 +7,7 @@ export const loader = () => {
 export default function LoginButton() {
     return (
         <Form action="/auth/google" method="post">
-            <button type="submit">Login with Google</button>
+            <Button type="submit">Login with Google</Button>
         </Form>
     );
 }
