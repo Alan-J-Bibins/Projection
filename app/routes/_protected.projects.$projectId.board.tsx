@@ -4,8 +4,8 @@ import { Form, useLoaderData, useNavigation } from '@remix-run/react';
 import Button from 'components/Button';
 import Dialog from 'components/Dialog';
 import Input from 'components/Input';
-import KanbanBox from 'components/KanbanBox';
 import KanbanColumn from 'components/KanbanColumn';
+import { Plus } from 'lucide-react';
 import { getUser } from '~/utils/actions';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -89,11 +89,13 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         }
         case 'taskCreate': {
             const taskName = String(formData.get('taskName'));
+            const taskDesc = String(formData.get('taskDesc'));
             const columnId = String(formData.get('columnId'));
             console.log(`Add ${taskName}`);
             const queryResponse = await prisma.task.create({
                 data: {
                     name: taskName,
+                    desc: taskDesc,
                     columnId: columnId
                 }
             });
@@ -113,12 +115,25 @@ export default function Kanban() {
     const navigation = useNavigation();
     console.log('ZeBoard', board);
     return (
-        <div className="space-y-4 h-[90%]">
-            <div className="w-full flex items-center justify-between">
-                <div />
+        <div className="h-[90%] flex flex-col gap-4 ">
+            <div className='flex items-start justify-start gap-4 w-full h-full'>
+                <div className='w-full overflow-x-auto h-full scrollbar-thin scrollbar-thumb-background'>
+                    <div
+                        className={`flex gap-4 h-full pb-4`}
+                    >
+                        {board?.Column.map((column, index) => {
+                            return <KanbanColumn
+                                column={column}
+                                projectId={projectId}
+                                key={index}
+                                tasks={board.Column[index].Task}
+                            />;
+                        })}
+                    </div>
+                </div>
                 <Dialog
                     title="New Column"
-                    trigger={<Button>New Column</Button>}
+                    trigger={<Button variant='critical' classNameAppend='sticky right-0'> <Plus /> </Button>}
                 >
                     <Form
                         method="post"
@@ -153,21 +168,6 @@ export default function Kanban() {
                         </div>
                     </Form>
                 </Dialog>
-            </div>
-            <div
-                className="grid gap-4 h-full"
-                style={{
-                    gridTemplateColumns: `repeat(${board?.Column.length}, minmax(0, 1fr))`,
-                }}
-            >
-                {board?.Column.map((column, index) => {
-                    return <KanbanColumn
-                        column={column}
-                        projectId={projectId}
-                        key={index}
-                        tasks={board.Column[index].Task}
-                    />;
-                })}
             </div>
         </div>
     );

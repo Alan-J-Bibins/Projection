@@ -3,11 +3,13 @@ export default function Button({
     children,
     disabled = false,
     variant = 'primary',
+    className,
     classNameAppend,
     value,
     name
 }: {
     classNameAppend?: string;
+    className?: string;
     type?: 'button' | 'submit' | 'reset';
     disabled?: boolean;
     children: React.ReactNode;
@@ -22,8 +24,8 @@ export default function Button({
                 type={type}
                 name={name}
                 value={value}
-                className={`${classNameAppend} py-2 px-4 text-primary bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl border border-primary/20 shadow-lg shadow-secondary/25
-                hover:border-primary hover:shadow-xl hover:shadow-primary/25 transition-all`}
+                className={!className ? `${classNameAppend} py-2 px-4 text-primary bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl border border-primary/20 shadow-lg shadow-secondary/25
+                hover:border-primary hover:shadow-xl hover:shadow-primary/25 transition-all` : `${className}`}
             >
                 {children}
             </button>

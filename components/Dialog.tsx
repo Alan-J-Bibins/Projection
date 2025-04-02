@@ -1,3 +1,4 @@
+import { useNavigation } from '@remix-run/react';
 import { X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -20,14 +21,22 @@ export default function Dialog({
     const [isOpen, setIsOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
+    const navigation = useNavigation();
 
     useEffect(() => {
         setMounted(true);
         return () => setMounted(false);
     }, []);
 
+    useEffect(() => {
+        if (isOpen && navigation.state === 'submitting') {
+            handleClose();
+        }
+    }, [navigation.state, isOpen]);
+
     const handleOpen = () => setIsOpen(true);
     const handleClose = () => {
+        console.log("Close DIalog");
         setIsExiting(true);
         setTimeout(() => {
             // Actually remove the component after animation completes
@@ -81,18 +90,20 @@ export default function Dialog({
                                 </button>
                             </div>
                             {children}
-                            <div className="flex justify-between items-center w-full">
-                                <div />
-                                <button
-                                    onClick={() => {
-                                        handleClose();
-                                        if (handleSubmit) handleSubmit();
-                                        console.log('wtf');
-                                    }}
-                                >
-                                    {submit}
-                                </button>
-                            </div>
+                            {submit && (
+                                <div className="flex justify-between items-center w-full">
+                                    <div />
+                                    <button
+                                        onClick={() => {
+                                            handleClose();
+                                            if (handleSubmit) handleSubmit();
+                                            console.log('wtf');
+                                        }}
+                                    >
+                                        {submit}
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </button>,
                     document.body

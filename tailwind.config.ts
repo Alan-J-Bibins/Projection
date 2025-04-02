@@ -37,6 +37,7 @@ export default {
     plugins: [
         require('tailwindcss-motion'),
         require('tailwind-scrollbar-hide'),
+        require('tailwind-scrollbar'),
     ],
     darkMode: ['class'],
 } satisfies Config;

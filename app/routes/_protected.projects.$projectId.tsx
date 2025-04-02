@@ -88,10 +88,10 @@ export default function Layout() {
             <div className="w-full flex items-center justify-between">
                 <h1 className="text-4xl font-righteous">{project?.name}</h1>
             </div>
-            <div className="w-full h-full overflow-y-auto">
+            <div className="w-full h-full overflow-y-auto pb-4">
                 <Outlet />
             </div>
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10">
                 <Dock />
             </div>
         </div>
