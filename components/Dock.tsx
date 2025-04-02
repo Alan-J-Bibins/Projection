@@ -15,10 +15,10 @@ export default function Dock() {
             border border-primary/20 hover:border-primary transition-colors shadow-lg hover:shadow-primary/25"
         >
             <DockItem Icon={LayoutDashboard} to="" />
-            <DockItem Icon={SquareDashedKanban} to="kanban" />
+            <DockItem Icon={SquareDashedKanban} to="board" />
             <DockItem Icon={ChartBarBig} to="timeline" />
-            <DockItem Icon={Settings2} to="settings" />
             <DockItem Icon={SquareDashedBottomCode} to="code" />
+            <DockItem Icon={Settings2} to="settings" />
         </div>
     );
 }

@@ -100,7 +100,7 @@ export default function Kanban() {
     const navigation = useNavigation();
     console.log('ZeBoard', board);
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 h-[90%]">
             <div className="w-full flex items-center justify-between">
                 <div />
                 <Dialog
@@ -109,7 +109,7 @@ export default function Kanban() {
                 >
                     <Form
                         method="post"
-                        action={`/projects/${projectId}/kanban`}
+                        action={`/projects/${projectId}/board`}
                         className="flex flex-col w-full items-center gap-4 mt-2"
                     >
                         <div className="w-full space-y-2 h-full group">
@@ -142,13 +142,19 @@ export default function Kanban() {
                 </Dialog>
             </div>
             <div
-                className="grid gap-4"
+                className="grid gap-4 h-full"
                 style={{
                     gridTemplateColumns: `repeat(${board?.Column.length}, minmax(0, 1fr))`,
                 }}
             >
                 {board?.Column.map((column, index) => {
-                    return <KanbanColumn key={index} name={column.name} />;
+                    return <KanbanColumn
+                        projectId={projectId}
+                        columnId={column.id}
+                        key={index}
+                        name={column.name}
+                        tasks={board.Column[index].Task}
+                    />;
                 })}
             </div>
         </div>
