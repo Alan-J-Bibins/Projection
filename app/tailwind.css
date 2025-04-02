@@ -32,6 +32,10 @@ body {
         font-weight: 300;
     }
 
+    .form-field {
+        @apply w-full bg-transparent p-2 text-lg border border-primary/40 rounded-xl resize-none h-auto focus:outline-none focus:border-accent placeholder:text-primary/40 transition-colors
+    }
+
 }
 
 .lucide {

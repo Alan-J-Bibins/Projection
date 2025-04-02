@@ -4,8 +4,8 @@ import LoginButton from './login';
 
 export const meta: MetaFunction = () => {
     return [
-        { title: 'New Remix App' },
-        { name: 'description', content: 'Welcome to Remix!' },
+        { title: 'Projection' },
+        { name: 'description', content: 'Welcome to Projection!' },
     ];
 };
 

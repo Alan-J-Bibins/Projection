@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { Await, Form, useLoaderData, useNavigate, useNavigation } from "@remix-run/react";
+import { Await, Form, useLoaderData, useNavigation } from "@remix-run/react";
 import Button from "components/Button";
 import Dialog from "components/Dialog";
+import Input from "components/Input";
 import ProjectCard, { ProjectCardLoading } from "components/ProjectCard";
 import { Folders, PackagePlus } from "lucide-react";
 import { Suspense } from "react";
@@ -87,19 +88,17 @@ export default function Page() {
                         >
                             <div className="w-full space-y-2 h-full group">
                                 <p className="w-full text-left font-semibold">Project Name</p>
-                                <input type="text"
+                                <Input
+                                    type="text"
                                     name="projectName"
                                     placeholder="Enter Project Name"
-                                    className="w-full bg-transparent p-2 text-lg border border-primary/40 rounded-xl
-                                    focus:outline-none focus:border-accent placeholder:text-primary/40 transition-colors"
-                                    required
+                                    required={true}
                                 />
                                 <p className="w-full text-left font-semibold">Project Description</p>
                                 <textarea
                                     name="projectDesc"
                                     placeholder="Enter Project Description"
-                                    className="w-full bg-transparent p-2 text-lg border border-primary/40 rounded-xl resize-none h-auto
-                                    focus:outline-none focus:border-accent placeholder:text-primary/40 transition-colors"
+                                    className="form-field"
                                 />
                             </div>
                             <div className="flex w-full justify-between items-center">
