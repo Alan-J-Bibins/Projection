@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 import Button from "components/Button";
 import Dialog from "components/Dialog";
@@ -8,11 +8,43 @@ import KanbanBox from "components/KanbanBox";
 import { getUser } from "~/utils/actions";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+    const projectId = params.projectId || "";
     const { user } = await getUser(request);
     const prisma = new PrismaClient;
     const board = await prisma.board.findUnique({
-        where: { projectId: params.projectId }
+        where: { projectId: projectId },
+        include: {
+            Column: {
+                include: {
+                    Task: true
+                }
+            }
+        }
     })
+    console.log("Board", board);
+    if (!board) {
+        try {
+            console.log("Creating the board:");
+            const board = await prisma.board.create({
+                data: {
+                    name: "Board",
+                    projectId: projectId,
+                    Column: {
+                        create: [
+                            { name: "To Do" },
+                            { name: "In Progress" },
+                            { name: "Done" },
+                        ],
+                    }
+                }
+            })
+            console.log("Created Board", board);
+        } catch (error) {
+            console.log("Error in Kanban Page", error);
+        } finally {
+            await prisma.$disconnect();
+        }
+    }
     return { user, projectId: params.projectId, board };
 }
 
@@ -38,7 +70,6 @@ export default function Kanban() {
                         className="flex flex-col w-full items-center gap-4 mt-2"
                     >
                         <div className="w-full space-y-2 h-full group">
-                            <p className="w-full text-left font-semibold">Column Name</p>
                             <Input
                                 type="text"
                                 name="columnName"
