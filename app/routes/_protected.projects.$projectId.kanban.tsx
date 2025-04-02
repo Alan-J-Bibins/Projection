@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-import { LoaderFunctionArgs } from '@remix-run/node';
+import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { Form, useLoaderData, useNavigation } from '@remix-run/react';
 import Button from 'components/Button';
 import Dialog from 'components/Dialog';
 import Input from 'components/Input';
 import KanbanBox from 'components/KanbanBox';
+import KanbanColumn from 'components/KanbanColumn';
 import { getUser } from '~/utils/actions';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -58,6 +59,42 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
         await prisma.$disconnect();
     }
 };
+
+export const action = async ({ request, params }: ActionFunctionArgs) => {
+    const projectId = params.projectId;
+    const formData = await request.formData();
+    const intent = formData.get('intent');
+    console.log("Intent", intent);
+    const prisma = new PrismaClient;
+    switch (intent) {
+        case 'add': {
+            const columnName = String(formData.get('columnName'));
+            console.log(`Add ${columnName}`);
+            const queryResponse = await prisma.column.create({
+                data: {
+                    name: columnName,
+                    board: { connect: { projectId: projectId } },
+                },
+                include: {
+                    Task: true
+                }
+            })
+            console.log(queryResponse);
+            break;
+        }
+        case 'delete': {
+            const columnName = formData.get('columnName');
+            console.log(`Delete ${columnName}`);
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+
+    return { ok: false };
+}
+
 export default function Kanban() {
     const { projectId, board } = useLoaderData<typeof loader>();
     const navigation = useNavigation();
@@ -87,6 +124,8 @@ export default function Kanban() {
                             <div />
                             <Button
                                 type="submit"
+                                name='intent'
+                                value='add'
                                 classNameAppend="disabled:opacity-55 disabled:border-accent disabled:shadow-none disabled:text-accent disabled:cursor-not-allowed"
                                 disabled={
                                     navigation.state === 'submitting' ||
@@ -94,22 +133,22 @@ export default function Kanban() {
                                 }
                             >
                                 {navigation.state === 'submitting' ||
-                                navigation.state === 'loading'
-                                    ? 'Submitting...'
-                                    : 'Submit'}
+                                    navigation.state === 'loading'
+                                    ? 'Adding...'
+                                    : 'Add'}
                             </Button>
                         </div>
                     </Form>
                 </Dialog>
             </div>
             <div
-                className="grid"
+                className="grid gap-4"
                 style={{
                     gridTemplateColumns: `repeat(${board?.Column.length}, minmax(0, 1fr))`,
                 }}
             >
                 {board?.Column.map((column, index) => {
-                    return <p key={index}>{column.name}</p>;
+                    return <KanbanColumn key={index} name={column.name} />;
                 })}
             </div>
         </div>
