@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Board, PrismaClient } from "@prisma/client";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 import Button from "components/Button";
@@ -10,22 +10,25 @@ import { getUser } from "~/utils/actions";
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     const projectId = params.projectId || "";
     const { user } = await getUser(request);
-    const prisma = new PrismaClient;
-    const board = await prisma.board.findUnique({
-        where: { projectId: projectId },
-        include: {
-            Column: {
-                include: {
-                    Task: true
+    const prisma = new PrismaClient();
+
+    try {
+        // First try to find existing board
+        let board = await prisma.board.findUnique({
+            where: { projectId: projectId },
+            include: {
+                Column: {
+                    include: {
+                        Task: true
+                    }
                 }
             }
-        }
-    })
-    console.log("Board", board);
-    if (!board) {
-        try {
+        });
+
+        // If board doesn't exist, create it
+        if (!board) {
             console.log("Creating the board:");
-            const board = await prisma.board.create({
+            board = await prisma.board.create({
                 data: {
                     name: "Board",
                     projectId: projectId,
@@ -36,18 +39,25 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
                             { name: "Done" },
                         ],
                     }
+                },
+                include: {
+                    Column: {
+                        include: {
+                            Task: true
+                        }
+                    }
                 }
-            })
+            });
             console.log("Created Board", board);
-        } catch (error) {
-            console.log("Error in Kanban Page", error);
-        } finally {
-            await prisma.$disconnect();
         }
+        return { user, projectId, board };
+    } catch (error) {
+        console.log("Error in Kanban Page", error);
+        throw error;
+    } finally {
+        await prisma.$disconnect();
     }
-    return { user, projectId: params.projectId, board };
 }
-
 export default function Kanban() {
     const { projectId, board } = useLoaderData<typeof loader>();
     const navigation = useNavigation();
@@ -90,7 +100,15 @@ export default function Kanban() {
                     </Form>
                 </Dialog>
             </div>
-            <KanbanBox task_name="name" task_description="LOREM IPSUM DOLOR SIT AMET CONSTEQTUER" logo="" tags={["hello 1", "hello 2"]} date="9-11-2001" />
+            <div className="grid"
+                style={{ gridTemplateColumns: `repeat(${board?.Column.length}, minmax(0, 1fr))` }}
+            >
+                {board?.Column.map((column, index) => {
+                    return (
+                        <p key={index}>{column.name}</p>
+                    );
+                })}
+            </div>
         </div>
     )
 }
