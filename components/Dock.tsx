@@ -12,7 +12,7 @@ export default function Dock() {
     return (
         <div
             className="w-fit flex justify-center items-center gap-4 bg-secondary/40 py-2 px-4 rounded-2xl overflow-hidden motion-blur-in-md motion-preset-slide-up-md
-            border border-primary/20 hover:border-primary transition-colors shadow-lg hover:shadow-primary/25 backdrop-blur-lg"
+            border border-primary/20 hover:border-primary transition-colors shadow-lg hover:shadow-primary/25"
         >
             <DockItem Icon={LayoutDashboard} to="" />
             <DockItem Icon={SquareDashedKanban} to="board" />
