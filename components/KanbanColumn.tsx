@@ -1,22 +1,22 @@
 import { Column, Task } from "@prisma/client";
 import { Plus } from "lucide-react";
 import KanbanBox from "./KanbanBox";
-import { Form, useNavigation } from "@remix-run/react";
+import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 import Dialog from "./Dialog";
 import Input from "./Input";
 import Button from "./Button";
+import { loader } from "~/routes/_protected.projects.$projectId.board";
 
 export default function KanbanColumn({
     tasks,
     column,
-    projectId
 }: {
     tasks: Task[],
     column: Column,
-    projectId: string,
 }) {
     // TODO: Render the Tasks here, configure adding new tasks, and setup deleting columns
     const navigation = useNavigation();
+    const { projectId, projectMembers } = useLoaderData<typeof loader>();
     return (
         <div className="group grid grid-cols-1 grid-rows-[auto_1fr] justify-between items-start gap-4 h-full group transition-all w-full min-w-52">
             <div className="flex justify-between items-center w-full bg-secondary/40 rounded-full p-2">
@@ -40,6 +40,7 @@ export default function KanbanColumn({
                             name="taskName"
                             placeholder="Enter Task Name"
                             required={true}
+                            autoComplete="off"
                         />
                         <Input
                             type="text"
@@ -47,6 +48,18 @@ export default function KanbanColumn({
                             placeholder="Enter Task Description"
                             required={false}
                         />
+                        <div className="flex items-center justify-start w-full gap-4">
+                            <p className="">Assignee: </p>
+                            <select name="assignedMemberId" className="w-full rounded-full p-2 bg-secondary/40">
+                                {projectMembers.map((member) => {
+                                    return (
+                                        <option key={member.id} value={member.id}>
+                                            {member.user.name}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
                         <input type="text" name="columnId" value={column.id} className="hidden" />
                         <div className="flex w-full justify-between items-center">
                             <div />
@@ -78,7 +91,7 @@ export default function KanbanColumn({
                             task_description={task.desc || ''}
                             tags={["hell"]}
                             date={`${task.createdAt.getDate()}/${task.createdAt.getMonth()}/${task.createdAt.getFullYear()}`}
-                            logo={'/'}
+                            logo={task.assignedMemberId}
                         />
                     );
 

@@ -3,11 +3,13 @@ export default function Input({
     name,
     placeholder,
     required = false,
+    autoComplete = "off",
 }: {
     type?: string;
     name?: string;
     placeholder?: string;
     required?: boolean;
+    autoComplete?: string,
 }) {
     return (
         <input
@@ -16,6 +18,7 @@ export default function Input({
             placeholder={placeholder}
             className="form-field"
             required={required}
+            autoComplete={autoComplete}
         />
     );
 }

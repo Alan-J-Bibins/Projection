@@ -18,9 +18,9 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
         let board = await prisma.board.findUnique({
             where: { projectId: projectId },
             include: {
-                Column: {
+                columns: {
                     include: {
-                        Task: true,
+                        tasks: true,
                     },
                 },
             },
@@ -33,7 +33,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
                 data: {
                     name: 'Board',
                     projectId: projectId,
-                    Column: {
+                    columns: {
                         create: [
                             { name: 'To Do' },
                             { name: 'In Progress' },
@@ -42,16 +42,26 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
                     },
                 },
                 include: {
-                    Column: {
+                    columns: {
                         include: {
-                            Task: true,
+                            tasks: true,
                         },
                     },
                 },
             });
             console.log('Created Board', board);
         }
-        return { user, projectId, board };
+
+        const projectMembers = await prisma.projectMember.findMany({
+            where: {
+                projectId: projectId,
+            },
+            include: {
+                user: true
+            }
+        })
+        console.log("Project's Members", projectMembers)
+        return { user, projectId, board, projectMembers };
     } catch (error) {
         console.log('Error in Kanban Page', error);
         throw error;
@@ -76,7 +86,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
                     board: { connect: { projectId: projectId } },
                 },
                 include: {
-                    Task: true
+                    tasks: true
                 }
             })
             console.log(queryResponse);
@@ -89,6 +99,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         }
         case 'taskCreate': {
             const taskName = String(formData.get('taskName'));
+            const assignedMemberId = String(formData.get('assignedMemberId'));
             const taskDesc = String(formData.get('taskDesc'));
             const columnId = String(formData.get('columnId'));
             console.log(`Add ${taskName}`);
@@ -96,7 +107,8 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
                 data: {
                     name: taskName,
                     desc: taskDesc,
-                    columnId: columnId
+                    columnId: columnId,
+                    assignedMemberId: assignedMemberId,
                 }
             });
             console.log("Task Created", queryResponse);
@@ -121,12 +133,12 @@ export default function Kanban() {
                     <div
                         className={`flex gap-4 h-full pb-4`}
                     >
-                        {board?.Column.map((column, index) => {
+                        {board.columns.map((column, index) => {
                             return <KanbanColumn
                                 column={column}
                                 projectId={projectId}
                                 key={index}
-                                tasks={board.Column[index].Task}
+                                tasks={board.columns[index].tasks}
                             />;
                         })}
                     </div>
