@@ -87,11 +87,10 @@ export default function KanbanColumn({
                     return (
                         <KanbanBox
                             key={index}
-                            task_name={task.name}
-                            task_description={task.desc || ''}
+                            task={task}
                             tags={["hell"]}
                             date={`${task.createdAt.getDate()}/${task.createdAt.getMonth()}/${task.createdAt.getFullYear()}`}
-                            logo={task.assignedMemberPic || ''}
+                            assigneePic={task.assignedMemberPic || ''}
                         />
                     );
 
