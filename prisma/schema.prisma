@@ -35,7 +35,7 @@ model ProjectMember {
     role      Role
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    tasks      Task[]
+    tasks     Task[]
 
     @@unique([userId, projectId])
 }
@@ -57,28 +57,30 @@ model Board {
     projectId String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    columns    Column[]
+    columns   Column[]
 }
 
 model Column {
     id        String   @id @default(cuid())
+    position  Int?
     name      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
     boardId   String
-    tasks      Task[]
+    tasks     Task[]
 }
 
 model Task {
-    id               String        @id @default(cuid())
-    name             String
-    desc             String?
-    createdAt        DateTime      @default(now())
-    updatedAt        DateTime      @updatedAt
-    column           Column        @relation(fields: [columnId], references: [id], onDelete: Cascade)
-    assignedMember   ProjectMember @relation(fields: [assignedMemberId], references: [id], onDelete: Cascade)
-    assignedMemberId String
+    id                String        @id @default(cuid())
+    name              String
+    desc              String?
+    position          Int?
+    createdAt         DateTime      @default(now())
+    updatedAt         DateTime      @updatedAt
+    column            Column        @relation(fields: [columnId], references: [id], onDelete: Cascade)
+    assignedMember    ProjectMember @relation(fields: [assignedMemberId], references: [id], onDelete: Cascade)
+    assignedMemberId  String
     assignedMemberPic String?
-    columnId         String
+    columnId          String
 }
