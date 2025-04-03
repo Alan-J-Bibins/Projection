@@ -1,3 +1,5 @@
+import { CalendarDays } from "lucide-react";
+
 export default function KanbanBox({
     task_name,
     task_description,
@@ -15,7 +17,7 @@ export default function KanbanBox({
         <div className="w-full flex flex-col items-start justify-start p-4 border border-primary/20 rounded-2xl transition-all
             bg-secondary/20 bg-gradient-to-b from-transparent to-primary/10 shadow-primary/25 shadow-md 
             hover:bg-primary/10 hover:-translate-y-1 hover:shadow-xl hover:border-b-accent hover:shadow-accent/25">
-            <div className="flex w-full items-center justify-between ">
+            <div className="flex w-full items-start justify-between ">
                 <h3 className="font-bold">{task_name}</h3>
                 <img src={logo} alt="logo" className="w-6 h-6 rounded-full" />
             </div>
@@ -33,7 +35,7 @@ export default function KanbanBox({
                         </span>
                     ))}
                 </div>
-                <div className="text-primary">{date}</div>
+                <div className="text-primary flex items-center gap-1"><CalendarDays size={16}/>{date}</div>
             </div>
         </div>
     );

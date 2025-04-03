@@ -4,13 +4,12 @@ import {
     LoaderFunctionArgs,
     redirect,
 } from '@remix-run/node';
-import { Await, Form, useLoaderData, useNavigation } from '@remix-run/react';
+import { Form, useLoaderData, useNavigation } from '@remix-run/react';
 import Button from 'components/Button';
 import Dialog from 'components/Dialog';
 import Input from 'components/Input';
-import ProjectCard, { ProjectCardLoading } from 'components/ProjectCard';
+import ProjectCard from 'components/ProjectCard';
 import { Folders, PackagePlus } from 'lucide-react';
-import { Suspense } from 'react';
 import { getUser } from '~/utils/actions';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -118,7 +117,7 @@ export default function Page() {
                                     }
                                 >
                                     {navigation.state === 'submitting' ||
-                                    navigation.state === 'loading'
+                                        navigation.state === 'loading'
                                         ? 'Submitting...'
                                         : 'Submit'}
                                 </Button>
@@ -139,22 +138,18 @@ export default function Page() {
                             </span>
                         </div>
                     ) : (
-                        <Suspense fallback={<Loading />}>
-                            <Await resolve={projects}>
-                                <div className="grid grid-cols-4 gap-4 w-full py-4">
-                                    {projects.map((project, index) => {
-                                        return (
-                                            <ProjectCard
-                                                to={`/projects/${project.id}`}
-                                                key={index}
-                                                label={project.name}
-                                                id={project.id}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            </Await>
-                        </Suspense>
+                        <div className="grid grid-cols-4 gap-4 w-full py-4">
+                            {projects.map((project, index) => {
+                                return (
+                                    <ProjectCard
+                                        to={`/projects/${project.id}`}
+                                        key={index}
+                                        label={project.name}
+                                        id={project.id}
+                                    />
+                                );
+                            })}
+                        </div>
                     )}
                 </div>
             </section>
@@ -168,16 +163,5 @@ export default function Page() {
                 </span>
             </section>
         </main>
-    );
-}
-
-function Loading() {
-    return (
-        <div className="grid grid-cols-4 gap-4 w-full">
-            <ProjectCardLoading />
-            <ProjectCardLoading />
-            <ProjectCardLoading />
-            <ProjectCardLoading />
-        </div>
     );
 }

@@ -18,7 +18,7 @@ export default function KanbanColumn({
     const navigation = useNavigation();
     const { projectId, projectMembers } = useLoaderData<typeof loader>();
     return (
-        <div className="group grid grid-cols-1 grid-rows-[auto_1fr] justify-between items-start gap-4 h-full group transition-all w-full min-w-52">
+        <div className="group grid grid-cols-1 grid-rows-[auto_1fr] justify-between items-start gap-4 h-full group transition-all w-full min-w-64">
             <div className="flex justify-between items-center w-full bg-secondary/40 rounded-full p-2">
                 <p className="px-2"> {column.name} </p>
                 <Dialog
@@ -91,7 +91,7 @@ export default function KanbanColumn({
                             task_description={task.desc || ''}
                             tags={["hell"]}
                             date={`${task.createdAt.getDate()}/${task.createdAt.getMonth()}/${task.createdAt.getFullYear()}`}
-                            logo={task.assignedMemberId}
+                            logo={task.assignedMemberPic || ''}
                         />
                     );
 

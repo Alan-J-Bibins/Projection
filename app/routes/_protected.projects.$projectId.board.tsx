@@ -100,6 +100,17 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         case 'taskCreate': {
             const taskName = String(formData.get('taskName'));
             const assignedMemberId = String(formData.get('assignedMemberId'));
+            const assignedMemberPic = await prisma.projectMember.findUnique({
+                where: { id: assignedMemberId },
+                select: {
+                    user: {
+                        select: {
+                            pic: true
+                        }
+                    }
+                }
+            }).then(result => result?.user.pic)
+            console.log("CHEEse", assignedMemberPic);
             const taskDesc = String(formData.get('taskDesc'));
             const columnId = String(formData.get('columnId'));
             console.log(`Add ${taskName}`);
@@ -109,6 +120,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
                     desc: taskDesc,
                     columnId: columnId,
                     assignedMemberId: assignedMemberId,
+                    assignedMemberPic: assignedMemberPic
                 }
             });
             console.log("Task Created", queryResponse);
@@ -136,7 +148,6 @@ export default function Kanban() {
                         {board.columns.map((column, index) => {
                             return <KanbanColumn
                                 column={column}
-                                projectId={projectId}
                                 key={index}
                                 tasks={board.columns[index].tasks}
                             />;
