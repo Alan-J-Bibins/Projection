@@ -1,3 +1,5 @@
+import { useNavigate } from '@remix-run/react';
+import TODO from "components/TODO";
 import { PrismaClient } from '@prisma/client';
 import {
     LoaderFunctionArgs,
@@ -54,6 +56,7 @@ function Overview() {
 }
 
 function Todo() {
+    const navigate = useNavigate();
     const { ok, tasks } = useLoaderData<typeof loader>();
     console.log("todo", tasks);
     return (
@@ -61,15 +64,28 @@ function Todo() {
             <div className="flex justify-between items-center w-full">
                 <h2 className="text-2xl font-righteous">Assigned Tasks</h2>
             </div>
-            <div>
-                    {tasks.map((task, index) => (
-                        <span
-                            key={index}
-                        >
-                            {task.name}
-                        <br/>
-                        </span>
-                    ))}
+            <div className="flex flex-col justify-start w-full">
+                    
+                {tasks.map((task, index) => {
+                    return (
+                        <>
+                            <br />
+                            <button key={index}
+                                onClick={() => {
+                                    navigate(`./board`);
+                                }}>
+                                <TODO
+                                    key={index}
+                                    task={task}
+                                    tags={["hell"]}
+                                    date={`${task.createdAt.getDate()}/${task.createdAt.getMonth()}/${task.createdAt.getFullYear()}`}
+                                />
+                            </button>
+                        </>
+                    );
+
+                })}
+
             </div>
         </div>
     );
