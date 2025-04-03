@@ -1,6 +1,34 @@
-import { Form } from '@remix-run/react';
+import { PrismaClient } from '@prisma/client';
+import {
+    LoaderFunctionArgs,
+} from '@remix-run/node';
+import { useLoaderData, Form } from '@remix-run/react';
 import Dialog from 'components/Dialog';
 import { Plus } from 'lucide-react';
+import { getUser } from '~/utils/actions';
+
+export const loader = async ({ request, params}: LoaderFunctionArgs) => {
+    const projectId = params.projectId || '';
+    const { user } = await getUser(request);
+    if (!user || !user.id) {
+        return { ok: false, tasks: [] };
+    } else {
+        const prisma = new PrismaClient();
+        const tasks = await prisma.task.findMany({
+            where: {
+                assignedMember:{
+                    userId: user?.id,
+                    projectId: projectId,
+                },
+
+            },
+        });
+        console.log('User', user);
+        console.log('Tasks', tasks);
+        await prisma.$disconnect();
+        return { ok: true, user, tasks };
+    }
+};
 
 function Meetings() {
     return (
@@ -26,10 +54,22 @@ function Overview() {
 }
 
 function Todo() {
+    const { ok, tasks } = useLoaderData<typeof loader>();
+    console.log("todo", tasks);
     return (
         <div className="flex flex-col w-full items-center justify-start bg-secondary/20 p-4 rounded-2xl border border-primary/20">
             <div className="flex justify-between items-center w-full">
                 <h2 className="text-2xl font-righteous">Assigned Tasks</h2>
+            </div>
+            <div>
+                    {tasks.map((task, index) => (
+                        <span
+                            key={index}
+                        >
+                            {task.name}
+                        <br/>
+                        </span>
+                    ))}
             </div>
         </div>
     );
