@@ -29,7 +29,7 @@ function Todo() {
     return (
         <div className="flex flex-col w-full items-center justify-start bg-secondary/20 p-4 rounded-2xl border border-primary/20">
             <div className="flex justify-between items-center w-full">
-                <h2 className="text-2xl font-righteous">Todo list</h2>
+                <h2 className="text-2xl font-righteous">Assigned Tasks</h2>
             </div>
         </div>
     );
