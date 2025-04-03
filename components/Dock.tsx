@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from '@remix-run/react';
 import {
-    ChartBarBig,
     LayoutDashboard,
     LucideIcon,
     Settings2,
@@ -16,7 +15,6 @@ export default function Dock() {
         >
             <DockItem Icon={LayoutDashboard} to="" />
             <DockItem Icon={SquareDashedKanban} to="board" />
-            <DockItem Icon={ChartBarBig} to="timeline" />
             <DockItem Icon={SquareDashedBottomCode} to="code" />
             <DockItem Icon={Settings2} to="settings" />
         </div>
