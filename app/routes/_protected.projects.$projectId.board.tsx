@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Column, PrismaClient, Task } from '@prisma/client';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { Form, useLoaderData, useNavigation } from '@remix-run/react';
 import Button from 'components/Button';
@@ -6,7 +6,12 @@ import Dialog from 'components/Dialog';
 import Input from 'components/Input';
 import KanbanColumn from 'components/KanbanColumn';
 import { Plus } from 'lucide-react';
+import { useState } from 'react';
 import { getUser } from '~/utils/actions';
+
+export type KanbanBoard = {
+    columns: (Column & { tasks: Task[] })[];
+}
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     const projectId = params.projectId || '';
@@ -35,7 +40,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
                     projectId: projectId,
                     columns: {
                         create: [
-                            { name: 'To Do' },
+                            { name: 'To Do', position: 0 },
                             { name: 'In Progress' },
                             { name: 'Done' },
                         ],
@@ -138,6 +143,8 @@ export default function Kanban() {
     const { projectId, board } = useLoaderData<typeof loader>();
     const navigation = useNavigation();
     console.log('ZeBoard', board);
+    const [kanban, setKanban] = useState<KanbanBoard>(board);
+    console.log("DNDBOARD", kanban);
     return (
         <div className="h-[90%] flex flex-col gap-4 ">
             <div className='flex items-start justify-start gap-4 w-full h-full'>
@@ -145,7 +152,7 @@ export default function Kanban() {
                     <div
                         className={`flex gap-4 h-full pb-4`}
                     >
-                        {board.columns.map((column, index) => {
+                        {kanban.columns.map((column, index) => {
                             return <KanbanColumn
                                 column={column}
                                 key={index}
