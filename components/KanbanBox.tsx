@@ -1,5 +1,7 @@
+import { useSortable } from "@dnd-kit/sortable";
 import { Task } from "@prisma/client";
 import { CalendarDays } from "lucide-react";
+import { CSS } from '@dnd-kit/utilities'
 
 export default function KanbanBox({
     task,
@@ -12,29 +14,72 @@ export default function KanbanBox({
     tags: string[];
     date: string;
 }) {
-    return (
-        <div className="w-full flex flex-col items-start justify-start p-4 border border-primary/20 rounded-2xl transition-all
-            bg-secondary/20 bg-gradient-to-b from-transparent to-primary/10 shadow-primary/25 shadow-md 
-            hover:bg-primary/10 hover:-translate-y-1 hover:shadow-xl hover:border-b-accent hover:shadow-accent/25">
-            <div className="flex w-full items-start justify-between ">
-                <h3 className="font-bold">{task.name}</h3>
-                <img src={assigneePic} alt="logo" className="w-6 h-6 rounded-full" />
+
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({
+        id: task.id,
+        data: {
+            type: 'TASK',
+            fromColumnId: task.columnId,
+            task,
+            position: task.position,
+        },
+    });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    };
+
+    if (isDragging) {
+        return (
+            <div
+                ref={setNodeRef}
+                style={style}
+                className="bg-background min-w-64 w-full border border-accent rounded-2xl opacity-60">
             </div>
-            {task.desc && (
-                <p className="text-sm ">{task.desc}</p>
-            )}
-            <div className="flex w-full justify-between items-center ">
-                <div className="flex flex-wrap gap-2 ">
-                    {tags.map((tag, index) => (
-                        <span
-                            key={index}
-                            className="bg-secondary text-sm px-2 py-px rounded-full"
-                        >
-                            {tag}
-                        </span>
-                    ))}
+        );
+    }
+
+    return (
+        <div
+            style={style}
+            ref={setNodeRef}
+            {...attributes}
+            {...listeners}
+            className="w-full"
+        >
+            <div
+                className="w-full flex flex-col p-4 border border-primary/20 rounded-2xl transition-all h-full
+                bg-secondary/20 bg-gradient-to-b from-transparent to-primary/10 shadow-primary/25 shadow-md 
+                hover:bg-primary/10 hover:shadow-xl hover:border-b-accent hover:shadow-accent/25">
+                <div className="flex w-full items-start justify-between ">
+                    <h3 className="font-bold">{task.name}</h3>
+                    <img src={assigneePic} alt="logo" className="w-6 h-6 rounded-full" />
                 </div>
-                <div className="text-primary flex items-center gap-1"><CalendarDays size={16} />{date}</div>
+                {task.desc && (
+                    <p className="text-sm ">{task.desc}</p>
+                )}
+                <div className="flex w-full justify-between items-center ">
+                    <div className="flex flex-wrap gap-2 ">
+                        {tags.map((tag, index) => (
+                            <span
+                                key={index}
+                                className="bg-secondary text-sm px-2 py-px rounded-full"
+                            >
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                    <div className="text-primary flex items-center gap-1"><CalendarDays size={16} />{date}</div>
+                </div>
             </div>
         </div>
     );

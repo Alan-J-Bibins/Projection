@@ -19,6 +19,9 @@ export default function Input({
             className="form-field"
             required={required}
             autoComplete={autoComplete}
+            onKeyDown={(e) => {
+                if (e.key === 'Space') return;
+            }}
         />
     );
 }
