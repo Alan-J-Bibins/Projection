@@ -4,10 +4,10 @@ export const loader = () => {
     return null;
 };
 
-export default function LoginButton() {
+export default function LoginButton({ text }: { text?: string }) {
     return (
         <Form action="/auth/google" method="post">
-            <Button type="submit">Login with Google</Button>
+            <Button type="submit">{text ?? 'Login with Google'}</Button>
         </Form>
     );
 }
