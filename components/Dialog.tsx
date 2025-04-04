@@ -45,6 +45,23 @@ export default function Dialog({
         }, 150);
     };
 
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                handleClose();
+            }
+            // Prevent space from closing dialog when focused inside
+            if (e.key === ' ' && e.target !== document.body) {
+                e.stopPropagation();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen])
+
     return (
         <>
             <button onClick={handleOpen} className={`cursor-pointer ${triggerClassName}`}>
@@ -54,7 +71,9 @@ export default function Dialog({
             {mounted &&
                 isOpen &&
                 createPortal(
-                    <button
+                    <div
+                        role='dialog'
+                        aria-modal='true'
                         onClick={handleClose}
                         className={`${isExiting ? 'motion-opacity-out-0' : 'motion-preset-focus-md'} motion-duration-150 bg-black/20 fixed inset-0 w-full h-full z-40 
                     flex justify-center items-center cursor-default`}
@@ -105,7 +124,7 @@ export default function Dialog({
                                 </div>
                             )}
                         </div>
-                    </button>,
+                    </div>,
                     document.body
                 )}
         </>

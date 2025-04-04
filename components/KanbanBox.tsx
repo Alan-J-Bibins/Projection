@@ -8,11 +8,13 @@ export default function KanbanBox({
     assigneePic,
     tags,
     date,
+    onTaskDelete,
 }: {
     task: Task
-    assigneePic: string;
-    tags: string[];
-    date: string;
+    assigneePic: string,
+    tags: string[],
+    onTaskDelete: () => void,
+    date: string,
 }) {
 
     const {

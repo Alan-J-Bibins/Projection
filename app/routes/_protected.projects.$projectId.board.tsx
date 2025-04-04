@@ -8,10 +8,8 @@ import KanbanColumn from 'components/KanbanColumn';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { getUser } from '~/utils/actions';
-import { arrayMove, SortableContext } from "@dnd-kit/sortable"
+import { SortableContext } from "@dnd-kit/sortable"
 import { DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { createPortal } from 'react-dom';
-import Page from './_protected.projects.$projectId._index';
 import KanbanBox from 'components/KanbanBox';
 
 export type KanbanBoard = {

@@ -157,6 +157,7 @@ export default function KanbanColumn({
                                         tags={["hell"]}
                                         date={`${task.createdAt.getDate()}/${task.createdAt.getMonth()}/${task.createdAt.getFullYear()}`}
                                         assigneePic={task.assignedMemberPic || ''}
+                                        onTaskDelete={() => {}}
                                     />
                                 );
 
