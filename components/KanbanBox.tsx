@@ -1,7 +1,8 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { Task } from "@prisma/client";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, CircleCheckBig } from "lucide-react";
 import { CSS } from '@dnd-kit/utilities'
+import { Form } from "@remix-run/react";
 
 export default function KanbanBox({
     task,
@@ -13,7 +14,7 @@ export default function KanbanBox({
     task: Task
     assigneePic: string,
     tags: string[],
-    onTaskDelete: () => void,
+    onTaskDelete: (e: React.FormEvent<HTMLFormElement>) => void,
     date: string,
 }) {
 
@@ -70,6 +71,11 @@ export default function KanbanBox({
                     <p className="text-sm ">{task.desc}</p>
                 )}
                 <div className="flex w-full justify-between items-center ">
+                    <Form onSubmit={onTaskDelete}>
+                        <button className="px-2 py-1 rounded-full hover:bg-secondary/40 hidden">
+                            <CircleCheckBig size={20} />
+                        </button>
+                    </Form>
                     <div className="flex flex-wrap gap-2 ">
                         {tags.map((tag, index) => (
                             <span
@@ -80,7 +86,7 @@ export default function KanbanBox({
                             </span>
                         ))}
                     </div>
-                    <div className="text-primary flex items-center gap-1"><CalendarDays size={16} />{date}</div>
+                    <div className="text-primary flex items-center gap-1"><CalendarDays size={20} />{date}</div>
                 </div>
             </div>
         </div>

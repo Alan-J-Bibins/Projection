@@ -312,11 +312,51 @@ export default function Kanban() {
                         position: col.tasks.length,
                         assignedMemberId: assignedMemberId,
                         assignedMemberPic: null,
+                        tags: []
                     }
                 ]
             } : col)
         }
         ))
+    }
+
+    async function handleTaskDelete(e: React.FormEvent<HTMLFormElement>) {
+        const formData = new FormData(e.currentTarget);
+        const taskId = String(formData.get('taskId'));
+        const prisma = new PrismaClient;
+        try {
+            await prisma.task.delete({
+                where: {
+                    id: taskId
+                }
+            })
+
+            setBoardState(prev => {
+                const updatedColumns = prev.columns.map(column => {
+                    // Filter out the deleted task
+                    const remainingTasks = column.tasks.filter(task => task.id !== taskId);
+
+                    // Recalculate positions for remaining tasks
+                    const tasksWithUpdatedPositions = remainingTasks.map((task, index) => ({
+                        ...task,
+                        position: index
+                    }));
+
+                    return {
+                        ...column,
+                        tasks: tasksWithUpdatedPositions
+                    };
+                });
+
+                return {
+                    columns: updatedColumns
+                };
+            });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            prisma.$disconnect
+        }
     }
 
     function handleMoveTask(
@@ -391,14 +431,14 @@ export default function Kanban() {
             // Dropping on a task
             targetColumnId = boardState.columns.find(col =>
                 col.tasks.some(t => t.id === over.id)
-            )?.id;
+            )?.id || '';
             const overTask = boardState.columns
                 .flatMap(col => col.tasks)
                 .find(t => t.id === over.id);
 
             if (!targetColumnId || !overTask) return;
 
-            newPosition = overTask.position;
+            newPosition = overTask.position ?? 0;
         } else {
             return;
         }
@@ -514,6 +554,7 @@ export default function Kanban() {
                                         tasks={boardState.columns[index].tasks}
                                         onAddTask={handleAddTask}
                                         onDeleteColumn={handleDeleteColumn}
+                                        onDeleteTask={handleTaskDelete}
                                     />;
                                 })}
                             </SortableContext>
@@ -531,6 +572,7 @@ export default function Kanban() {
                                         assigneePic=''
                                         tags={[]}
                                         date={`${activeTask.createdAt.getDate()}/${activeTask.createdAt.getMonth()}/${activeTask.createdAt.getFullYear()}`}
+                                        onTaskDelete={handleTaskDelete}
                                     />
                                 )}
                             </DragOverlay>

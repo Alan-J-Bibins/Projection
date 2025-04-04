@@ -1,3 +1,4 @@
+import cuid2, { createId } from '@paralleldrive/cuid2';
 import { PrismaClient } from '@prisma/client';
 import {
     ActionFunctionArgs,
@@ -9,7 +10,7 @@ import Button from 'components/Button';
 import Dialog from 'components/Dialog';
 import Input from 'components/Input';
 import ProjectCard from 'components/ProjectCard';
-import { Folders, PackagePlus } from 'lucide-react';
+import { FolderKey, Folders, PackagePlus } from 'lucide-react';
 import { getUser } from '~/utils/actions';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -40,10 +41,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const { user } = await getUser(request);
     const projectName = String(formData.get('projectName'));
     const projectDesc = String(formData.get('projectDesc'));
+    const passwd = createId();
     const project = await prisma.project.create({
         data: {
             name: projectName,
             description: projectDesc,
+            passwd: passwd,
             members: {
                 create: {
                     user: { connect: { email: user?.email } },
@@ -156,6 +159,23 @@ export default function Page() {
             <section className="w-full flex flex-col items-center">
                 <div className="w-full flex items-center justify-between">
                     <h1 className="text-4xl font-righteous">Joined Projects</h1>
+                    <Dialog
+                        title="Join project"
+                        trigger={
+                            <Button>
+                                <div className="flex justify-center items-center gap-1">
+                                    <FolderKey size={20} />
+                                    Join Project
+                                </div>
+                            </Button>
+                        }
+                        submit={
+                            <Button>
+                                Close
+                            </Button>
+                        }
+                    >
+                    </Dialog>
                 </div>
                 <Folders size={24} className="size-32 text-secondary" />
                 <span className="text-secondary">

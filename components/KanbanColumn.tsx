@@ -1,4 +1,4 @@
-import { Column, Task } from "@prisma/client";
+import { PrismaClient, Column, Task } from "@prisma/client";
 import { GripVertical, Plus, Trash2 } from "lucide-react";
 import KanbanBox from "./KanbanBox";
 import { Form, useLoaderData, useNavigation } from "@remix-run/react";
@@ -14,11 +14,13 @@ export default function KanbanColumn({
     column,
     onAddTask,
     onDeleteColumn,
+    onDeleteTask,
 }: {
     tasks: Task[],
     column: Column,
     onAddTask: (e: React.FormEvent<HTMLFormElement>) => void,
     onDeleteColumn: (e: React.FormEvent<HTMLFormElement>) => void,
+    onDeleteTask: (e: React.FormEvent<HTMLFormElement>) => void,
 }) {
     // TODO: Render the Tasks here, configure adding new tasks, and setup deleting columns
     const navigation = useNavigation();
@@ -51,6 +53,7 @@ export default function KanbanColumn({
             </div>
         );
     }
+
 
     return (
         <div
@@ -110,12 +113,6 @@ export default function KanbanColumn({
                                     placeholder="Enter Task Description"
                                     required={false}
                                 />
-                                <Input
-                                    type="text"
-                                    name="taskTags"
-                                    placeholder="Enter Task Description"
-                                    required={false}
-                                />
                                 <div className="flex items-center justify-start w-full gap-4">
                                     <p className="">Assignee: </p>
                                     <select name="assignedMemberId" className="w-full rounded-full p-2 bg-secondary/40">
@@ -163,7 +160,7 @@ export default function KanbanColumn({
                                         tags={task.tags}
                                         date={`${task.createdAt.getDate()}/${task.createdAt.getMonth()}/${task.createdAt.getFullYear()}`}
                                         assigneePic={task.assignedMemberPic || ''}
-                                        onTaskDelete={() => {}}
+                                        onTaskDelete={onDeleteTask}
                                     />
                                 );
 

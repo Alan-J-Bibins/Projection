@@ -3,7 +3,6 @@ import {
     LayoutDashboard,
     LucideIcon,
     Settings2,
-    SquareDashedBottomCode,
     SquareDashedKanban,
 } from 'lucide-react';
 
@@ -15,7 +14,6 @@ export default function Dock() {
         >
             <DockItem Icon={LayoutDashboard} to="" />
             <DockItem Icon={SquareDashedKanban} to="board" />
-            <DockItem Icon={SquareDashedBottomCode} to="code" />
             <DockItem Icon={Settings2} to="settings" />
         </div>
     );
