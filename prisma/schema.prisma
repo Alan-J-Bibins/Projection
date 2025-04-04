@@ -83,4 +83,5 @@ model Task {
     assignedMemberId  String
     assignedMemberPic String?
     columnId          String
+    tags              String[]
 }
