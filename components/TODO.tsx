@@ -1,7 +1,7 @@
 import { Task } from "@prisma/client";
 import { CalendarDays } from "lucide-react";
 
-export default function TODO({
+export default function Todo({
     task,
     tags,
     date,

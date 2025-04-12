@@ -77,7 +77,7 @@ export default function KanbanBox({
                         </button>
                     </Form>
                     <div className="flex flex-wrap gap-2 ">
-                        {tags.map((tag, index) => (
+                        {tags && tags.map((tag, index) => (
                             <span
                                 key={index}
                                 className="bg-secondary text-sm px-2 py-px rounded-full"

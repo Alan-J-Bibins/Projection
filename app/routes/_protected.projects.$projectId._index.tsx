@@ -1,5 +1,5 @@
 import { useNavigate } from '@remix-run/react';
-import TODO from "components/TODO";
+import Todo from "components/TODO";
 import { PrismaClient } from '@prisma/client';
 import {
     LoaderFunctionArgs,
@@ -55,9 +55,22 @@ function Overview() {
     );
 }
 
-function Todo() {
+function TodoSection() {
     const navigate = useNavigate();
     const { ok, tasks } = useLoaderData<typeof loader>();
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
+    console.log("MATHUKUTTIIIII");
     console.log("todo", tasks);
     return (
         <div className="flex flex-col w-full items-center justify-start bg-secondary/20 p-4 rounded-2xl border border-primary/20">
@@ -74,7 +87,7 @@ function Todo() {
                                 onClick={() => {
                                     navigate(`./board`);
                                 }}>
-                                <TODO
+                                <Todo
                                     key={index}
                                     task={task}
                                     tags={["hell"]}
@@ -105,7 +118,7 @@ export default function Page() {
         <main className="flex gap-4 justify-between w-full items-start">
             <div className="flex flex-col h-full w-full justify-start items-center gap-4">
                 <Meetings />
-                <Todo />
+                <TodoSection />
             </div>
             <div className="flex flex-col h-full w-full justify-start items-center gap-4">
                 <Overview />
