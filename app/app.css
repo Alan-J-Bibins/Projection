@@ -31,19 +31,19 @@
     }
 
     [data-theme='catppuccin'] {
-        --color-text: #c6d0f5;
-        --color-background: #1E1E2E;
-        --color-primary: #ca9ee6;
-        --color-secondary: #babbf1;
-        --color-accent: #e78284;
+        --color-text: #b5bfe2;
+        --color-background: #181825;
+        --color-primary: #a38ecb;
+        --color-secondary: #494C59;
+        --color-accent: #e06c75;
     }
 
     [data-theme='tokyonight'] {
-        --color-text: #82AAFF;
-        --color-background: #222436;
-        --color-primary: #C099FF;
-        --color-secondary: #C8D3F5;
-        --color-accent: #C3E88D;
+        --color-text: #bfc6d4;
+        --color-background: #181a23;
+        --color-primary: #9d7cd8;
+        --color-secondary: #3c4c72;
+        --color-accent: #9ece6a;
     }
 }
 

@@ -6,6 +6,11 @@ export function themeSet(theme: string) {
     document.documentElement.setAttribute('data-theme', theme);
 }
 
+export function getTheme() {
+    const theme = document.documentElement.getAttribute('data-theme');
+    return theme;
+}
+
 export default function ThemeSelect() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const themes = ['light', 'dark', 'catppuccin', 'tokyonight']
