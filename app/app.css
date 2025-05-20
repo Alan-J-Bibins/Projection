@@ -45,6 +45,15 @@
         --color-secondary: #3c4c72;
         --color-accent: #9ece6a;
     }
+
+    .form-style {
+        @apply flex flex-col w-full items-center gap-4 mt-2;
+    }
+
+    .form-input {
+        @apply w-full bg-transparent p-2 text-lg border border-primary/40 rounded-xl resize-none h-auto focus:outline-none focus:border-accent placeholder:text-primary/40 transition-colors;
+    }
+
 }
 
 .font-sans {

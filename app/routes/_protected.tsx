@@ -2,7 +2,7 @@ import { Outlet, type LoaderFunctionArgs } from "react-router";
 import BreadCrumbs from "~/components/BreadCrumbs";
 import Searchbar from "~/components/Searchbar";
 import Sidebar from "~/components/Sidebar";
-import ThemeSelect, { getTheme } from "~/components/ThemeSelect";
+import ThemeSelect from "~/components/ThemeSelect";
 import { useSession } from "~/lib/auth-client";
 import { authenticateSession } from "~/lib/utils.server"
 

@@ -35,7 +35,7 @@ function SidebarItem({
             <Icon size={20} className="justify-self-start mx-px" />
             <p
                 className={`${isExpanded
-                    ? 'motion-opacity-in-0 -motion-translate-x-in-50 motion-duration-150'
+                    ? 'motion-opacity-in-0 -motion-translate-x-in-50 motion-duration-150 motion-delay-100'
                     : 'motion-translate-x-out-100 motion-duration-200 hidden'
                     }`}
                 style={{ lineHeight: 0 }}
@@ -92,7 +92,7 @@ function DesktopSidebar({ name, pic }: { name: string; pic?: string }) {
                 )}
                 <p
                     className={`truncate w-14 ${isExpanded
-                        ? 'motion-opacity-in-0 -motion-translate-x-in-50 motion-duration-150'
+                        ? 'motion-opacity-in-0 -motion-translate-x-in-50 motion-duration-150 motion-delay-100'
                         : 'motion-translate-x-out-100 motion-duration-200 hidden'
                         }`}
                 >

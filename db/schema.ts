@@ -1,4 +1,5 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { createId } from '@paralleldrive/cuid2';
 
 export const user = sqliteTable("user", {
     id: text('id').primaryKey(),
@@ -45,3 +46,22 @@ export const verification = sqliteTable("verification", {
     createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => /* @__PURE__ */ new Date()),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => /* @__PURE__ */ new Date())
 });
+
+export const projectMember = sqliteTable("projectMember", {
+    id: text('id').$defaultFn(() => createId()).primaryKey(),
+    userId: text('userId').notNull().references(() => user.id, { onDelete: 'cascade' }),
+    projectId: text('projectId').notNull().references(() => project.id, { onDelete: 'cascade' }),
+    role: text('role').notNull(),
+    createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+}, (table) => ({
+    userProjectUnique: uniqueIndex('user_project_unique').on(table.userId, table.projectId)
+}));
+
+export const project = sqliteTable("project", {
+    id: text('id').$defaultFn(() => createId()).primaryKey(),
+    name: text('name').notNull(),
+    description: text('description'),
+    createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+})

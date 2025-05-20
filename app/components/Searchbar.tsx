@@ -1,5 +1,5 @@
 import { Form } from 'react-router';
-import { LuSend } from 'react-icons/lu';
+import { LucideIcon } from './LucideIcon';
 
 export default function Searchbar() {
     return (
@@ -12,7 +12,7 @@ export default function Searchbar() {
                 className="w-full bg-transparent focus:outline-none placeholder:text-primary/40 focus:placeholder:text-primary"
                 placeholder="Search for people, projects or tasks"
             />
-            <LuSend size={20} className="text-primary/40" />
+            <LucideIcon name='LuSend' fontSize={20} className="text-primary/40 group-focus-within:text-primary" />
         </Form>
     );
 }
