@@ -13,6 +13,7 @@ export const auth = betterAuth({
             verification: schema.verification,
         }
     }),
+    trustedOrigins: [process.env.SITE_URL!, process.env.PROD_URL!],
     socialProviders: {
         google: {
             clientId: process.env.GOOGLE_CLIENT_ID as string,
