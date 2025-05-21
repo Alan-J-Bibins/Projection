@@ -1,23 +1,26 @@
-import { Form, redirect, useLoaderData, type ActionFunctionArgs } from "react-router";
+import { Form, useLoaderData, type ActionFunctionArgs, type LoaderFunctionArgs } from "react-router";
 import Button from "~/components/Button";
 import Dialog from "~/components/Dialog";
 import Input from "~/components/Input";
 import { LucideIcon } from "~/components/LucideIcon";
+import ProjectCard from "~/components/ProjectCard";
+import { createProject, getProjectsWhereUserIsAdmin } from "~/lib/db.server";
 
-export const loader = async () => {
-    const projects: string[] = [];
-    return { projects };
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+    const myProjects = await getProjectsWhereUserIsAdmin(request)
+    console.log(myProjects);
+    return { myProjects };
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
-    console.log("Hello there");
-    console.log(formData);
-    return redirect('/settings')
+    const projectName = String(formData.get('projectName'));
+    const projectDesc = String(formData.get('projectDesc'));
+    await createProject(request, projectName, projectDesc);
 }
 
 export default function Page() {
-    const { projects } = useLoaderData<typeof loader>();
+    const { myProjects } = useLoaderData<typeof loader>();
     return (
         <div className="w-full">
             <div className="flex justify-between items-center w-full">
@@ -45,20 +48,37 @@ export default function Page() {
                             type="text"
                             name="projectName"
                             placeholder="Enter Project Name"
-                            required={true}
+                            required
+                        />
+                        <textarea
+                            name="projectDesc"
+                            placeholder="Enter Project Description"
+                            className="form-input"
                         />
                         <br />
                     </Form>
                 </Dialog>
             </div>
             <br />
-            {projects.length === 0 && (
+            {myProjects.length === 0 ? (
                 <div className="flex flex-col w-full justify-center items-center text-primary/40">
                     <LucideIcon name="LuFolders" fontSize={128} />
                     <h5>
                         Oops! Looks like you haven&apos;t made any
                         projects
                     </h5>
+                </div>
+            ) : (
+                <div className="grid grid-cols-4 w-full justify-start items-center">
+                    {myProjects.map((myProject) => {
+                        return (
+                            <ProjectCard
+                                key={myProject.id}
+                                projectName={myProject.name}
+                                projectDesc={myProject.description || ""}
+                            />
+                        );
+                    })}
                 </div>
             )}
             <div>
@@ -80,7 +100,7 @@ export default function Page() {
                 </Dialog>
             </div>
             <br />
-            {projects.length === 0 && (
+            {myProjects.length === 0 && (
                 <div className="flex flex-col w-full justify-center items-center text-primary/40">
                     <LucideIcon name="LuFolders" fontSize={128} />
                     <h5>
