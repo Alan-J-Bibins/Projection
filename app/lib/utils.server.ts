@@ -3,10 +3,15 @@ import { auth } from "./auth.server";
 
 export async function authenticateSession(request: Request) {
     const session = await auth.api.getSession(request);
-    console.log(session);
     if (!session) {
         throw redirect('/');
     }
     return { session }
 }
 
+export async function getUser(request: Request) {
+    const session = await auth.api.getSession(request);
+    const user = session?.user;
+    if (!user) throw new Response('Unauthorized', { status: 401 })
+    return user;
+}

@@ -1,5 +1,6 @@
 import { sqliteTable, text, integer, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { createId } from '@paralleldrive/cuid2';
+import { name } from "drizzle-orm";
 
 export const user = sqliteTable("user", {
     id: text('id').primaryKey(),
@@ -51,7 +52,7 @@ export const projectMember = sqliteTable("projectMember", {
     id: text('id').$defaultFn(() => createId()).primaryKey(),
     userId: text('userId').notNull().references(() => user.id, { onDelete: 'cascade' }),
     projectId: text('projectId').notNull().references(() => project.id, { onDelete: 'cascade' }),
-    role: text('role').notNull(),
+    role: text('role', {enum: ['ADMIN', 'MEMBER']}).notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
 }, (table) => ({
@@ -62,6 +63,32 @@ export const project = sqliteTable("project", {
     id: text('id').$defaultFn(() => createId()).primaryKey(),
     name: text('name').notNull(),
     description: text('description'),
+    createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+})
+
+export const board = sqliteTable("board", {
+    id: text('id').$defaultFn(() => createId()).primaryKey(),
+    projectId: text('projectId').notNull().references(() => project.id, { onDelete: 'cascade' }).unique(),
+    createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+})
+
+export const column = sqliteTable("column", {
+    id: text('id').$defaultFn(() => createId()).primaryKey(),
+    name: text('name').notNull(),
+    boardId: text('boardId').notNull().references(() => board.id, { onDelete: 'cascade' }),
+    createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+})
+
+export const task = sqliteTable("task", {
+    id: text('id').$defaultFn(() => createId()).primaryKey(),
+    name: text('name').notNull(),
+    desc: text('desc'),
+    tags: text('tags'),
+    columnId: text('columnId').notNull().references(() => column.id, { onDelete: 'cascade' }),
+    assignedMemberId: text('assignedMemberId').notNull().references(() => projectMember.id, { onDelete: 'cascade' }),
     createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
 })
