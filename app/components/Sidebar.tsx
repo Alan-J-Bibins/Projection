@@ -137,7 +137,7 @@ export default function Sidebar({ name, pic }: { name: string; pic?: string }) {
             <div className="hidden md:block">
                 <DesktopSidebar name={name} pic={pic} />
             </div>
-            <div className="block md:hidden">
+            <div className="hidden">
                 <MobileSidebar />
             </div>
         </>

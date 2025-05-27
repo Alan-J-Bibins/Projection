@@ -15,6 +15,13 @@
       "when": 1747848128153,
       "tag": "0001_charming_midnight",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1748341088427,
+      "tag": "0002_green_kat_farrell",
+      "breakpoints": true
     }
   ]
 }
