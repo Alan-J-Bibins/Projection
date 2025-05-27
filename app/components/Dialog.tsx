@@ -67,9 +67,9 @@ export default function Dialog({
 
     return (
         <>
-            <button onClick={handleOpen} className={`cursor-pointer ${triggerClassName}`}>
+            <div onClick={handleOpen} className={`cursor-pointer ${triggerClassName}`}>
                 {trigger}
-            </button>
+            </div>
 
             {mounted &&
                 isOpen &&
@@ -116,23 +116,23 @@ export default function Dialog({
                                 <div />
                                 <div className='flex items-center gap-2'>
                                     {cancel && (
-                                        <button
+                                        <div
                                             onClick={() => {
                                                 handleClose();
                                                 if (handleCancel) handleCancel();
                                             }}
                                         >
                                             {cancel}
-                                        </button>
+                                        </div>
                                     )}
                                     {submit && (
-                                        <button
+                                        <div
                                             onClick={() => {
                                                 if (handleSubmit) handleSubmit();
                                             }}
                                         >
                                             {submit}
-                                        </button>
+                                        </div>
                                     )}
                                 </div>
                             </div>
