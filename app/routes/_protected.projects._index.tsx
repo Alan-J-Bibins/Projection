@@ -89,6 +89,7 @@ export default function Page() {
                                     return (
                                         <ProjectCard
                                             key={myProject.id}
+                                            projectId={myProject.id}
                                             projectName={myProject.name}
                                             projectDesc={myProject.description || ""}
                                         />
@@ -146,6 +147,7 @@ export default function Page() {
                                     return (
                                         <ProjectCard
                                             key={joinedProject.id}
+                                            projectId={joinedProject.id}
                                             projectName={joinedProject.name}
                                             projectDesc={joinedProject.description || ""}
                                         />
